@@ -5,7 +5,8 @@ Este paquete contiene la app realizada con React Native y Expo. Utiliza **Expo R
 ## Uso rápido
 1. Ejecuta `npm install` para instalar las dependencias.
 2. Copia `.env.example` a `.env` y coloca tu clave de OpenWeather en `REACT_APP_OPENWEATHER_API_KEY`.
-3. Inicia la aplicación con `npx expo start` y sigue las instrucciones para abrirla en tu dispositivo, emulador o navegador.
+3. Define `EXPO_PUBLIC_ALERTS_URL` con la URL de la base de datos de alertas.
+4. Inicia la aplicación con `npx expo start` y sigue las instrucciones para abrirla en tu dispositivo, emulador o navegador.
 
 ## Estructura relevante
 - `app/` – pantallas de la aplicación y la definición de rutas.

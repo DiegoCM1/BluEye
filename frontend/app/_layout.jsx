@@ -5,6 +5,7 @@ import { TamaguiProvider } from "@tamagui/core";
 import config from "../tamagui.config";
 import { ThemeProvider } from "../context/ThemeContext";
 import { DaltonicModeProvider } from "../context/DaltonicModeContext";
+import { NotificationsProvider } from "../context/NotificationsContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useColorScheme } from "nativewind";
 
@@ -19,12 +20,13 @@ export default function Layout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <DaltonicModeProvider>
         <ThemeProvider>
-          <SafeAreaProvider>
-            <TamaguiProvider config={config} defaultTheme="light">
-              <SafeAreaView
-                style={{ flex: 1, backgroundColor: headerBg }}
-                edges={["top"]}
-              >
+          <NotificationsProvider>
+            <SafeAreaProvider>
+              <TamaguiProvider config={config} defaultTheme="light">
+                <SafeAreaView
+                  style={{ flex: 1, backgroundColor: headerBg }}
+                  edges={["top"]}
+                >
                 <Stack
                   screenOptions={{
                     headerStyle: { backgroundColor: headerBg },
@@ -67,7 +69,8 @@ export default function Layout() {
                 </Stack>
               </SafeAreaView>
             </TamaguiProvider>
-          </SafeAreaProvider>
+            </SafeAreaProvider>
+          </NotificationsProvider>
         </ThemeProvider>
       </DaltonicModeProvider>
     </GestureHandlerRootView>

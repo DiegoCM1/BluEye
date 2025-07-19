@@ -1,10 +1,14 @@
 import { View, Text, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
+import { useLocalSearchParams } from "expo-router";
+import { getAlertDetails } from "../api/alerts";
 
 // ────────────────── componente principal ──────────────────
 export default function AlertDetailsScreen({ data }) {
-  // Mock por defecto
-  const info =
+  const params = useLocalSearchParams();
+  const alertId = params.id;
+  const [info, setInfo] = useState(
     data || {
       name: "Idalia",
       category: 3,
@@ -16,7 +20,22 @@ export default function AlertDetailsScreen({ data }) {
       pressureMb: 960,
       forwardSpeedKmh: 18,
       localRisk: { extremeWind: 80, waveHeight: 5.4, rainfall24h: 180 },
+    }
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (alertId) {
+        try {
+          const res = await getAlertDetails(alertId);
+          setInfo(res);
+        } catch (e) {
+          console.error("Failed to load alert details", e);
+        }
+      }
     };
+    fetchData();
+  }, [alertId]);
 
   // Colores según categoría
   const catColors = {
