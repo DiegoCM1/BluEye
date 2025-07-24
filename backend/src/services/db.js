@@ -1,14 +1,16 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+const { Pool } = require('pg');
 
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../../data.db');
-
-const db = new sqlite3.Database(DB_PATH, (err) => {
-  if (err) {
-    console.error('Failed to connect to SQLite:', err);
-  } else {
-    console.log('SQLite database ready at', DB_PATH);
-  }
+const pool = new Pool({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  ssl: process.env.DB_SSL === 'true'
 });
 
-module.exports = db;
+pool.on('connect', () => {
+  console.log('Connected to PostgreSQL');
+});
+
+module.exports = pool;
