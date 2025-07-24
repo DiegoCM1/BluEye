@@ -19,7 +19,7 @@ export default function MoreScreen() {
     { label: "Ajustes",            icon: "cog-outline",           screen: "SettingsScreen" },
     { label: "Alarma",             icon: "alarm",                 screen: "AlarmScreen"    },
     { label: "Feedback",           icon: "message-reply-outline", screen: "FeedbackScreen" },
-    { label: "Acerca de nosotros", icon: "information",           screen: "AboutScreen"    },
+    { label: "Acerca de nosotros", icon: "information-outline",           screen: "AboutScreen"    },
   ];
 
   return (
