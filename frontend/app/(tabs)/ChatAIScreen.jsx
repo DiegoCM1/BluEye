@@ -199,19 +199,24 @@ export default function ChatAIScreen() {
     }
   };
 
-  // Update the Send Button JSX
+  // Send button component
   const SendButton = () => (
     <TouchableOpacity
-      className="h-10 w-10 rounded-full bg-phase2Buttons dark:bg-phase2CardsDark items-center justify-center"
+      className={`h-10 w-10 rounded-full bg-phase2Buttons dark:bg-phase2CardsDark items-center justify-center ${isLoading ? "opacity-50" : ""}`}
       onPress={handleSendMessage}
       disabled={isLoading}
     >
-      {isLoading ? (
-        <ActivityIndicator size="small" color="white" />
-      ) : (
-        <MaterialCommunityIcons name="send" size={20} color="white" />
-      )}
+      <MaterialCommunityIcons name="send" size={20} color="white" />
     </TouchableOpacity>
+  );
+
+  // Indicator shown while waiting for the AI response
+  const ThinkingBubble = () => (
+    <View className="mb-3 flex-row justify-start">
+      <View className="max-w-[80%] rounded-2xl rounded-tl-none bg-phase2Cards dark:bg-phase2CardsDark px-4 py-3">
+        <ActivityIndicator size="small" color="gray" />
+      </View>
+    </View>
   );
 
   return (
@@ -251,6 +256,7 @@ export default function ChatAIScreen() {
                 <Text className="text-3xl font-semibold text-phase2Buttons dark:text-phase2TitlesDark text-center">?</Text>
               </View>
             )}
+            ListFooterComponent={isLoading ? <ThinkingBubble /> : null}
             renderItem={({ item }) => (
               <View
                 className={`mb-3 flex-row ${
