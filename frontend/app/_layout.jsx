@@ -7,10 +7,23 @@ import { ThemeProvider } from "../context/ThemeContext";
 import { DaltonicModeProvider } from "../context/DaltonicModeContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useColorScheme } from "nativewind";
+import { useEffect } from "react";
+import { registerForPushNotificationsAsync } from "../utils/pushNotifications";
 
 /* ---------- Layout raíz ---------- */
 export default function Layout() {
   const { colorScheme } = useColorScheme();
+
+   // ⚡ Solicitar token FCM al montar
+  useEffect(() => {
+    registerForPushNotificationsAsync()
+      .then((token) => {
+        // Aquí podrías enviarlo a tu backend si quieres
+        console.log("Token guardado:", token);
+      })
+      .catch(console.error);
+  }, []);
+
   const headerBg =
     colorScheme === "dark" ? "rgb(40, 60, 80)" : "rgb(60, 200, 220)";
   const headerTint = colorScheme === "dark" ? "rgb(230, 230, 250)" : "#fff";

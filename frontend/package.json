@@ -39,7 +39,10 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "tailwindcss": "^3.4.15",
-    "tamagui": "^1.116.15"
+    "tamagui": "^1.116.15",
+    "expo-notifications": "~0.31.4",
+    "expo-device": "~7.1.4",
+    "expo-constants": "~17.1.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
