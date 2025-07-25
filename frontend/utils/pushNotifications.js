@@ -2,6 +2,8 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Alert, Platform } from 'react-native';
+import Toast from 'react-native-toast-message';
+
 
 export async function registerForPushNotificationsAsync() {
   if (!Device.isDevice) {
@@ -30,4 +32,28 @@ export async function registerForPushNotificationsAsync() {
 
   // TODO: envíalo a tu backend
   return fcmToken;
+}
+
+// Muestra un banner sencillo cuando llega la notificación
+export function setForegroundNotificationHandler() {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: false, // 👈 evitamos el alert nativo
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+
+  Notifications.addNotificationReceivedListener((notif) => {
+    const { title, body } = notif.request.content;
+    Toast.show({ text1: title, text2: body });
+  });
+}
+
+// Devuelve el unsubscribe para limpiarlo en unuseEffect
+export function addNotificationResponseListener(onTap) {
+  return Notifications.addNotificationResponseReceivedListener((response) => {
+    const data = response.notification.request.content.data;
+    onTap(data); // envía los datos al callback que definas en el layout
+  });
 }

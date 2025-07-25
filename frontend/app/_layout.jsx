@@ -8,13 +8,18 @@ import { DaltonicModeProvider } from "../context/DaltonicModeContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useColorScheme } from "nativewind";
 import { useEffect } from "react";
-import { registerForPushNotificationsAsync } from "../utils/pushNotifications";
+import {
+  registerForPushNotificationsAsync,
+  setForegroundNotificationHandler,
+  addNotificationResponseListener,
+} from "../utils/pushNotifications";
+import Toast from "react-native-toast-message";
 
 /* ---------- Layout raíz ---------- */
 export default function Layout() {
   const { colorScheme } = useColorScheme();
 
-   // ⚡ Solicitar token FCM al montar
+  // ⚡ Solicitar token FCM al montar
   useEffect(() => {
     registerForPushNotificationsAsync()
       .then((token) => {
@@ -22,6 +27,22 @@ export default function Layout() {
         console.log("Token guardado:", token);
       })
       .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    setForegroundNotificationHandler();
+
+    // 👇 Cuando el usuario pulse la notificación
+    const sub = addNotificationResponseListener((data) => {
+      // ejemplo: data podría traer { alertId: '123' }
+      if (data?.alertId)
+        router.push({
+          pathname: "AlertDetailsScreen",
+          params: { id: data.alertId },
+        });
+    });
+
+    return () => sub.remove(); // limpia al desmontar
   }, []);
 
   const headerBg =
@@ -79,6 +100,7 @@ export default function Layout() {
                   />
                 </Stack>
               </SafeAreaView>
+              <Toast />
             </TamaguiProvider>
           </SafeAreaProvider>
         </ThemeProvider>
