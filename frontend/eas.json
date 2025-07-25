@@ -7,7 +7,8 @@
     },
     "development": {
       "env": { "NPM_CONFIG_LEGACY_PEER_DEPS": "1" },
-      "android": { "buildType": "apk" }
+      "android": { "buildType": "apk" },
+      "developmentClient": true
     }
   }
 }
