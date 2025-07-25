@@ -14,6 +14,8 @@ const message = {
     title: 'Huracán Patricia a 100km',
     body: 'Pulsa para más detalles',
   },
+data: { alertId: '123' }   // <-- payload que leerá el listener
+
 };
 
 admin
