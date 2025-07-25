@@ -1,9 +1,12 @@
 // sendPush.js
-const admin = require('firebase-admin');
-const serviceAccount = require('./blue-eye-4dbfc-firebase-adminsdk-fbsvc-dda84c043c.json');
+console.log('VAR =>', process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
+
+const admin = require('firebase-admin');
+ 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.applicationDefault(), // ← leerá %GOOGLE_APPLICATION_CREDENTIALS%
+    projectId: 'blue-eye-4dbfc'
 });
 
 const registrationToken = 'd8P2NK5sQfyNvOS6FEt8tY:APA91bEsckfrvJTneGRmv0IXfGEMBQd969cK6O5fdgUmEUswADXC6kHh860Kj81F7SkFZIcUnsDd0Y7PpdtcCwhsj19pPTTrIjwGmLUMyIrdnhrQ91QnFhk';
