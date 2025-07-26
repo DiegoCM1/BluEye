@@ -29,6 +29,19 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Health check: comprueba que el servidor responde y la DB está accesible
+app.get('/health', async (req, res) => {
+  try {
+    // Si usas pg.Pool:
+    await pool.query('SELECT 1');
+    return res.status(200).json({ status: 'OK', db: 'reachable' });
+  } catch (err) {
+    console.error('DB health check failed:', err);
+    return res.status(500).json({ status: 'Error', db: 'unreachable' });
+  }
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
