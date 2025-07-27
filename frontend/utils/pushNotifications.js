@@ -30,6 +30,16 @@ export async function registerForPushNotificationsAsync() {
   const { data: fcmToken } = await Notifications.getDevicePushTokenAsync();
   console.log('FCM token →', fcmToken);
 
+  try {
+    await fetch('https://metaquetzal-production.up.railway.app/api/push-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: fcmToken }),
+    });
+    console.log('Token enviado al backend');
+  } catch (error) {
+    console.error('Error enviando token al backend:', error);
+  }
   // TODO: envíalo a tu backend
   return fcmToken;
 }
