@@ -8,6 +8,7 @@ BluEye es un proyecto integral de alertas y prevención de huracanes. Consta de 
 - **Mapas con capas climáticas y rutas a refugios**.
 - **Modo oscuro y modo daltónico** para mejorar la accesibilidad.
 - **Funcionamiento sin conexión** con los últimos datos descargados.
+- **Opinión de usuarios** mediante un formulario de retroalimentación almacenado en la nube.
 
 ## Estructura del repositorio
 - **frontend/** – Aplicación React Native con Expo Router. Incluye componentes compartidos para web y móvil, estilos con Tailwind y la comunicación con la IA.
@@ -16,7 +17,7 @@ BluEye es un proyecto integral de alertas y prevención de huracanes. Consta de 
 
 ### Variables de entorno
 - `frontend/.env.example` contiene `REACT_APP_OPENWEATHER_API_KEY`.
-- `backend/.env.example` define `OPENWEATHER_API_KEY`, `PORT` y las variables `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_NAME` y `DB_SSL` para PostgreSQL.
+- `backend/.env.example` define `OPENWEATHER_API_KEY`, `PORT` y la cadena de conexión `DATABASE_URL` para PostgreSQL.
 
 ## Building for Android
 Para generar un APK de prueba se utiliza **Expo EAS**:

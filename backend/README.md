@@ -3,11 +3,11 @@
 Este backend está construido con Node.js y Express. Calcula el riesgo meteorológico usando datos de OpenWeather, guarda alertas y recibe comentarios de los usuarios. El asistente de IA se encuentra en el proyecto [ai-blueye](https://github.com/DiegoCM1/ai-blueye).
 
 ## Instalación rápida
-1. Copia `.env.example` a `.env` y agrega tu `OPENWEATHER_API_KEY`.
+1. Copia `.env.example` a `.env` y agrega tus valores para `OPENWEATHER_API_KEY` y `DATABASE_URL`.
 2. Ejecuta `npm install` para instalar las dependencias.
 3. Inicia el servidor con `npm start` (o `npm run dev` si prefieres usar nodemon).
 
-El servidor escucha en el puerto definido por `PORT` (3002 por defecto) y se conecta a PostgreSQL usando las variables `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_NAME` y `DB_SSL`.
+El servidor escucha en el puerto definido por `PORT` (3002 por defecto) y se conecta a PostgreSQL mediante la cadena `DATABASE_URL`.
 
 ## Estructura de carpetas
 - `src/index.js` — punto de entrada de la aplicación.
