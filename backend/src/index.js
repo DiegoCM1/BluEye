@@ -12,6 +12,7 @@ import pushTokenRoutes from './routes/pushToken.routes.js';
 // Inicializa la conexión a la base de datos (puede que exportes el pool ahí)
 // Import the database pool to use it in health checks
 import pool from './services/db.js';
+import notificationRoutes from './routes/notification.routes.js'; //Notifications script
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use('/risk', riskRoutes);
 app.use('/alerts', alertsRoutes);
 app.use('/feedback', feedbackRoutes);
 app.use('/api', pushTokenRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health check simple
 app.get('/health', (req, res) => {
