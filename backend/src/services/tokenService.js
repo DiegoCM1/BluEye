@@ -1,6 +1,6 @@
 // backend/src/services/tokenService.js
 
-import pool from '../data/db.js';  // tu instancia de pg.Pool
+import pool from './db.js';  // tu instancia de pg.Pool
 
 export async function upsertToken(token) {
   const query = `
