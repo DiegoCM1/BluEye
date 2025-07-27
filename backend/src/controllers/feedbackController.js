@@ -1,29 +1,46 @@
-const feedbackStore = require('../data/feedbackStore');
+// src/controllers/feedbackController.js
 
-exports.submitFeedback = (req, res) => {
+const { createFeedback, getAllFeedback } = require('../data/feedbackStore');
+
+/**
+ * POST /feedback
+ * Body: { rating, email?, message }
+ */
+async function createFeedbackHandler(req, res) {
   const { rating, email, message } = req.body;
 
-  if (!rating || Number.isNaN(parseInt(rating))) {
-    return res.status(400).json({ error: 'rating is required and must be a number' });
+  // Validaciones básicas
+  if (typeof rating !== 'number') {
+    return res.status(400).json({ error: 'rating es obligatorio y debe ser number' });
+  }
+  if (typeof message !== 'string' || !message.trim()) {
+    return res.status(400).json({ error: 'message es obligatorio y debe ser texto' });
   }
 
-  const feedback = { rating: parseInt(rating), email, message };
+  try {
+    const id = await createFeedback({ rating, email, message });
+    return res.status(201).json({ id });
+  } catch (err) {
+    console.error('Error al crear feedback:', err);
+    return res.status(500).json({ error: 'Error interno del servidor' });
+  }
+}
 
-  feedbackStore.insert(feedback, (err, id) => {
-    if (err) {
-      console.error('DB insert error:', err);
-      return res.status(500).json({ error: 'failed to save feedback' });
-    }
-    res.status(201).json({ success: true, id });
-  });
-};
+/**
+ * GET /feedback
+ * Query: —
+ */
+async function getAllFeedbackHandler(req, res) {
+  try {
+    const all = await getAllFeedback();
+    return res.status(200).json(all);
+  } catch (err) {
+    console.error('Error al recuperar feedback:', err);
+    return res.status(500).json({ error: 'Error interno del servidor' });
+  }
+}
 
-exports.listFeedback = (req, res) => {
-  feedbackStore.getAll((err, rows) => {
-    if (err) {
-      console.error('DB query error:', err);
-      return res.status(500).json({ error: 'failed to fetch feedback' });
-    }
-    res.json(rows);
-  });
+module.exports = {
+  createFeedback: createFeedbackHandler,
+  getAllFeedback: getAllFeedbackHandler,
 };
