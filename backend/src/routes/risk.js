@@ -1,7 +1,10 @@
-const express = require('express');
-const router = express.Router();
-const { getRisk } = require('../controllers/riskController');
+// backend/src/routes/risk.routes.js
+
+import { Router } from 'express';
+import { getRisk } from '../controllers/risk.controller.js';
+
+const router = Router();
 
 router.post('/', getRisk);
 
-module.exports = router;
+export default router;

@@ -1,6 +1,7 @@
 {
   "name": "blueye-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Express backend for hurricane risk and alerts",
   "main": "src/index.js",
   "scripts": {

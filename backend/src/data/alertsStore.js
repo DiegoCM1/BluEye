@@ -1,10 +1,16 @@
+// backend/src/data/alertsStore.js
+
 const alerts = [];
 
-exports.add = (alert) => {
+export function add(alert) {
   alerts.push(alert);
   return alert;
-};
+}
 
-exports.getAll = () => alerts;
+export function getAll() {
+  return alerts;
+}
 
-exports.getById = (id) => alerts.find((a) => a.id === id);
+export function getById(id) {
+  return alerts.find((a) => a.id === id);
+}

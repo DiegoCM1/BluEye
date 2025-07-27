@@ -1,14 +1,14 @@
-// src/routes/feedback.js
-const express = require('express');
-// Importa todo el objeto y luego usa sus propiedades — así evitas problemas de path o renombrado.
-const feedbackController = require('../controllers/feedbackController');
+// backend/src/routes/feedback.js
 
-const router = express.Router();
+import { Router } from 'express';
+import { createFeedback, getAllFeedback } from '../controllers/feedbackController.js';
 
-// POST /feedback → feedbackController.createFeedback
-router.post('/', feedbackController.createFeedback);
+const router = Router();
 
-// GET  /feedback → feedbackController.getAllFeedback
-router.get('/', feedbackController.getAllFeedback);
+// POST /feedback → crea un nuevo feedback
+router.post('/', createFeedback);
 
-module.exports = router;
+// GET  /feedback → lista todos los feedbacks
+router.get('/', getAllFeedback);
+
+export default router;

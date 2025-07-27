@@ -1,24 +1,31 @@
-// Risk analysis utilities extracted from the frontend backend
-const axios = require('axios');
+// backend/src/services/riskAnalysis.js
 
-async function getCurrentWeather(lat, lon, apiKey) {
+import axios from 'axios';
+
+export async function getCurrentWeather(lat, lon, apiKey) {
   if (!apiKey) {
     throw new Error('Missing OpenWeather API key');
   }
-  const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
-    params: { lat, lon, appid: apiKey, units: 'metric', lang: 'es' }
-  });
+  const response = await axios.get(
+    'https://api.openweathermap.org/data/2.5/weather',
+    {
+      params: { lat, lon, appid: apiKey, units: 'metric', lang: 'es' },
+    }
+  );
   return response.data;
 }
 
-async function getForecast(lat, lon, apiKey) {
-  const response = await axios.get('https://api.openweathermap.org/data/2.5/forecast', {
-    params: { lat, lon, appid: apiKey, units: 'metric', lang: 'es' }
-  });
+export async function getForecast(lat, lon, apiKey) {
+  const response = await axios.get(
+    'https://api.openweathermap.org/data/2.5/forecast',
+    {
+      params: { lat, lon, appid: apiKey, units: 'metric', lang: 'es' },
+    }
+  );
   return response.data;
 }
 
-function analyzeForecastTrend(forecast) {
+export function analyzeForecastTrend(forecast) {
   let score = 0;
   let factors = [];
   const next24Hours = forecast.list.slice(0, 8);
@@ -27,7 +34,7 @@ function analyzeForecastTrend(forecast) {
   let minPressure = 1013;
   let heavyRainCount = 0;
 
-  next24Hours.forEach(item => {
+  next24Hours.forEach((item) => {
     const weather = item.weather[0].main.toLowerCase();
     if (weather.includes('thunderstorm')) {
       stormCount++;
@@ -63,10 +70,11 @@ function analyzeForecastTrend(forecast) {
   return { score, factors };
 }
 
-function calculateRiskLevel(currentWeather, forecast) {
+export function calculateRiskLevel(currentWeather, forecast) {
   let riskScore = 0;
   let factors = [];
   const windSpeed = currentWeather.wind?.speed || 0;
+
   if (windSpeed > 25) {
     riskScore += 30;
     factors.push(`Vientos extremos (${windSpeed.toFixed(1)} m/s)`);
@@ -77,6 +85,7 @@ function calculateRiskLevel(currentWeather, forecast) {
     riskScore += 10;
     factors.push(`Vientos moderados (${windSpeed.toFixed(1)} m/s)`);
   }
+
   const pressure = currentWeather.main.pressure;
   if (pressure < 980) {
     riskScore += 25;
@@ -85,8 +94,10 @@ function calculateRiskLevel(currentWeather, forecast) {
     riskScore += 15;
     factors.push(`Presión atmosférica baja (${pressure} hPa)`);
   }
+
   const weather = currentWeather.weather[0].main.toLowerCase();
   const description = currentWeather.weather[0].description;
+
   if (weather.includes('thunderstorm')) {
     riskScore += 35;
     factors.push(`Tormenta eléctrica: ${description}`);
@@ -100,14 +111,16 @@ function calculateRiskLevel(currentWeather, forecast) {
     riskScore += 10;
     factors.push(`Precipitación: ${description}`);
   }
+
   const visibility = currentWeather.visibility || 10000;
   if (visibility < 1000) {
     riskScore += 20;
-    factors.push(`Visibilidad muy baja (${(visibility/1000).toFixed(1)} km)`);
+    factors.push(`Visibilidad muy baja (${(visibility / 1000).toFixed(1)} km)`);
   } else if (visibility < 5000) {
     riskScore += 10;
-    factors.push(`Visibilidad reducida (${(visibility/1000).toFixed(1)} km)`);
+    factors.push(`Visibilidad reducida (${(visibility / 1000).toFixed(1)} km)`);
   }
+
   const temp = currentWeather.main.temp;
   if (temp > 40) {
     riskScore += 15;
@@ -116,9 +129,11 @@ function calculateRiskLevel(currentWeather, forecast) {
     riskScore += 15;
     factors.push(`Temperatura extrema baja (${temp}°C)`);
   }
+
   const forecastRisk = analyzeForecastTrend(forecast);
   riskScore += forecastRisk.score;
   factors = factors.concat(forecastRisk.factors);
+
   let level;
   if (riskScore >= 80) {
     level = 'extreme';
@@ -129,11 +144,13 @@ function calculateRiskLevel(currentWeather, forecast) {
   } else {
     level = 'low';
   }
+
   return { score: Math.min(riskScore, 100), level, factors };
 }
 
-function generateAlerts(riskAnalysis, currentWeather) {
+export function generateAlerts(riskAnalysis, currentWeather) {
   const alerts = [];
+
   if (riskAnalysis.level === 'extreme') {
     alerts.push({
       type: 'EMERGENCY',
@@ -145,9 +162,9 @@ function generateAlerts(riskAnalysis, currentWeather) {
         'Busque refugio inmediatamente',
         'Evite salir al exterior',
         'Manténgase informado',
-        'Tenga kit de emergencia listo'
+        'Tenga kit de emergencia listo',
       ],
-      location: currentWeather.name
+      location: currentWeather.name,
     });
   } else if (riskAnalysis.level === 'high') {
     alerts.push({
@@ -160,9 +177,9 @@ function generateAlerts(riskAnalysis, currentWeather) {
         'Limite actividades al aire libre',
         'Asegure objetos sueltos',
         'Monitoree condiciones constantemente',
-        'Prepare kit de emergencia'
+        'Prepare kit de emergencia',
       ],
-      location: currentWeather.name
+      location: currentWeather.name,
     });
   } else if (riskAnalysis.level === 'medium') {
     alerts.push({
@@ -174,49 +191,50 @@ function generateAlerts(riskAnalysis, currentWeather) {
       actions: [
         'Manténgase informado',
         'Evite actividades de riesgo',
-        'Tenga precaución al conducir'
+        'Tenga precaución al conducir',
       ],
-      location: currentWeather.name
+      location: currentWeather.name,
     });
   }
+
   return alerts;
 }
 
-function generateBanner(riskAnalysis) {
+export function generateBanner(riskAnalysis) {
   const banners = {
     extreme: {
       color: '#8B0000',
       backgroundColor: '#FFE4E1',
       text: '🚨 PELIGRO EXTREMO',
       description: 'Condiciones meteorológicas extremas',
-      icon: '🚨'
+      icon: '🚨',
     },
     high: {
       color: '#FF4500',
       backgroundColor: '#FFF8DC',
       text: '⚠️ ALTO RIESGO',
       description: 'Condiciones meteorológicas peligrosas',
-      icon: '⚠️'
+      icon: '⚠️',
     },
     medium: {
       color: '#FFA500',
       backgroundColor: '#FFFACD',
       text: '⚡ PRECAUCIÓN',
       description: 'Condiciones meteorológicas adversas',
-      icon: '⚡'
+      icon: '⚡',
     },
     low: {
       color: '#32CD32',
       backgroundColor: '#F0FFF0',
       text: '✅ CONDICIONES NORMALES',
       description: 'Condiciones meteorológicas estables',
-      icon: '✅'
-    }
+      icon: '✅',
+    },
   };
   return banners[riskAnalysis.level];
 }
 
-function generateRecommendations(riskAnalysis) {
+export function generateRecommendations(riskAnalysis) {
   const recommendations = {
     extreme: [
       'Permanezca en un lugar seguro y resistente',
@@ -224,36 +242,26 @@ function generateRecommendations(riskAnalysis) {
       'Tenga agua y alimentos para 72 horas',
       'Mantenga dispositivos cargados y radio funcionando',
       'Escuche alertas oficiales de Protección Civil',
-      'Evite ventanas y estructuras débiles'
+      'Evite ventanas y estructuras débiles',
     ],
     high: [
       'Evite todas las actividades al aire libre',
       'Conduzca con extrema precaución o evítelo',
       'Asegure objetos que puedan volarse con el viento',
       'Tenga linterna, radio y suministros a mano',
-      'Manténgase alejado de árboles y estructuras altas'
+      'Manténgase alejado de árboles y estructuras altas',
     ],
     medium: [
       'Planifique actividades al aire libre con cuidado',
       'Lleve ropa adecuada para las condiciones',
       'Manténgase informado de cambios en el clima',
-      'Tenga precaución extra al conducir'
+      'Tenga precaución extra al conducir',
     ],
     low: [
       'Disfrute del día con normalidad',
       'Condiciones ideales para actividades al aire libre',
-      'Mantenga rutina normal de actividades'
-    ]
+      'Mantenga rutina normal de actividades',
+    ],
   };
   return recommendations[riskAnalysis.level];
 }
-
-module.exports = {
-  getCurrentWeather,
-  getForecast,
-  calculateRiskLevel,
-  analyzeForecastTrend,
-  generateAlerts,
-  generateBanner,
-  generateRecommendations
-};

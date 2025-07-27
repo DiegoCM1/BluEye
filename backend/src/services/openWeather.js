@@ -1,16 +1,18 @@
-const axios = require('axios');
-const {
+// backend/src/services/openWeather.js
+
+import axios from 'axios';
+import {
   getCurrentWeather,
   getForecast,
   calculateRiskLevel,
   generateAlerts,
   generateBanner,
-  generateRecommendations
-} = require('./riskAnalysis');
+  generateRecommendations,
+} from './riskAnalysis.js';
 
 const API_KEY = process.env.OPENWEATHER_API_KEY;
 
-exports.fetchRiskData = async (lat, lon) => {
+export async function fetchRiskData(lat, lon) {
   if (!API_KEY) {
     throw new Error('Missing OpenWeather API key');
   }
@@ -25,7 +27,7 @@ exports.fetchRiskData = async (lat, lon) => {
       lat: parseFloat(lat),
       lon: parseFloat(lon),
       name: currentWeather.name,
-      country: currentWeather.sys.country
+      country: currentWeather.sys.country,
     },
     riskLevel: risk.level,
     riskScore: risk.score,
@@ -37,12 +39,12 @@ exports.fetchRiskData = async (lat, lon) => {
       windDirection: currentWeather.wind?.deg || 0,
       visibility: currentWeather.visibility || 10000,
       weather: currentWeather.weather[0].main,
-      description: currentWeather.weather[0].description
+      description: currentWeather.weather[0].description,
     },
     alerts,
     banner: generateBanner(risk),
     recommendations: generateRecommendations(risk),
     factors: risk.factors,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
-};
+}

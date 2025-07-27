@@ -1,12 +1,12 @@
-// src/controllers/feedbackController.js
+// backend/src/controllers/feedback.controller.js
 
-const { createFeedback, getAllFeedback } = require('../data/feedbackStore');
+import { createFeedback, getAllFeedback } from '../data/feedbackStore.js';
 
 /**
  * POST /feedback
  * Body: { rating, email?, message }
  */
-async function createFeedbackHandler(req, res) {
+export async function createFeedbackHandler(req, res) {
   console.log('BODY RECEIVED:', req.body);
   const { rating, email, message } = req.body;
 
@@ -31,7 +31,7 @@ async function createFeedbackHandler(req, res) {
  * GET /feedback
  * Query: —
  */
-async function getAllFeedbackHandler(req, res) {
+export async function getAllFeedbackHandler(req, res) {
   try {
     const all = await getAllFeedback();
     return res.status(200).json(all);
@@ -40,8 +40,3 @@ async function getAllFeedbackHandler(req, res) {
     return res.status(500).json({ error: 'Error interno del servidor' });
   }
 }
-
-module.exports = {
-  createFeedback: createFeedbackHandler,
-  getAllFeedback: getAllFeedbackHandler,
-};

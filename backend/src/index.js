@@ -1,16 +1,20 @@
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
+// backend/src/index.js
+
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
+import riskRoutes from './routes/risk.js';
+import alertsRoutes from './routes/alerts.js';
+import feedbackRoutes from './routes/feedback.js';
+import pushTokenRoutes from './routes/pushToken.routes.js';
+
+// Inicializa la conexión a la base de datos (puede que exportes el pool ahí)
+import './services/db.js';
+// o, si tu db.js exporta directamente el pool:
+// import pool from './services/db.js';
 
 dotenv.config();
-
-const riskRoutes = require('./routes/risk');
-const alertsRoutes = require('./routes/alerts');
-const feedbackRoutes = require('./routes/feedback');
-const pushTokenRoutes = require('./routes/pushToken.routes')
-
-// Initialize database
-require('./services/db');
 
 const app = express();
 const PORT = process.env.PORT || 3002;
@@ -23,6 +27,7 @@ app.use('/alerts', alertsRoutes);
 app.use('/feedback', feedbackRoutes);
 app.use('/api', pushTokenRoutes);
 
+// Health check simple
 app.get('/health', (req, res) => {
   res.json({
     status: 'OK',
@@ -31,21 +36,21 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Health check: comprueba que el servidor responde y la DB está accesible
-app.get('/health', async (req, res) => {
+// Health check de BD
+app.get('/health-db', async (req, res) => {
   try {
-    // Si usas pg.Pool:
-    await pool.query('SELECT 1');
-    return res.status(200).json({ status: 'OK', db: 'reachable' });
+    // Si tu db.js exporta `pool` de pg.Pool:
+    const { rows } = await pool.query('SELECT 1');
+    return res.status(200).json({ status: 'OK', db: 'reachable', rows });
   } catch (err) {
     console.error('DB health check failed:', err);
     return res.status(500).json({ status: 'Error', db: 'unreachable' });
   }
 });
 
-
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
-module.exports = app;
+// Si necesitas exportar `app` para tests u otros usos:
+export default app;

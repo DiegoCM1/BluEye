@@ -1,8 +1,9 @@
-// src/data/feedbackStore.js
-const pool = require('../services/db');
+// backend/src/data/feedbackStore.js
+
+import pool from '../services/db.js';
 
 // Si quieres mantener la creación automática de la tabla, déjalo:
-;(async () => {
+(async () => {
   try {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS public.feedback (
@@ -19,7 +20,7 @@ const pool = require('../services/db');
 })();
 
 // Inserta un nuevo feedback y devuelve el ID
-async function createFeedback({ rating, email, message }) {
+export async function createFeedback({ rating, email, message }) {
   const result = await pool.query(
     `INSERT INTO public.feedback (rating, email, message)
      VALUES ($1, $2, $3)
@@ -30,7 +31,7 @@ async function createFeedback({ rating, email, message }) {
 }
 
 // Recupera todos los feedbacks
-async function getAllFeedback() {
+export async function getAllFeedback() {
   const result = await pool.query(
     `SELECT id, rating, email, message, created_at
      FROM public.feedback
@@ -38,8 +39,3 @@ async function getAllFeedback() {
   );
   return result.rows;
 }
-
-module.exports = {
-  createFeedback,
-  getAllFeedback,
-};

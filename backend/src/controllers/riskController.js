@@ -1,6 +1,8 @@
-const { fetchRiskData } = require('../services/openWeather');
+// backend/src/controllers/risk.controller.js
 
-exports.getRisk = async (req, res) => {
+import { fetchRiskData } from '../services/openWeather.js';
+
+export async function getRisk(req, res) {
   try {
     const { lat, lon } = req.body;
     if (!lat || !lon) {
@@ -13,4 +15,4 @@ exports.getRisk = async (req, res) => {
     console.error('Risk controller error:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
-};
+}
