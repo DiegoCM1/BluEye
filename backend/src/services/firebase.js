@@ -1,11 +1,13 @@
-// src/services/firebase.js
+// backend/src/services/firebase.js
+
 import admin from 'firebase-admin';
 
-// ➊  Inicializa usando la credencial que toma de la variable
+// Parseamos el JSON completo desde la variable de entorno
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+
 admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-  projectId: 'blue-eye-4dbfc',     // tu ID de proyecto
+  credential: admin.credential.cert(serviceAccount),
 });
 
-// ➋  Exporta el cliente de mensajería para usarlo en otros módulos
-export const messaging = admin.messaging();
+// Opcional: exporta admin por si lo necesitas en otros módulos
+export default admin;

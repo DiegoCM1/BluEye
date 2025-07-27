@@ -13,6 +13,7 @@ import pushTokenRoutes from './routes/pushToken.routes.js';
 // Import the database pool to use it in health checks
 import pool from './services/db.js';
 import notificationRoutes from './routes/notification.routes.js'; //Notifications script
+import './services/firebase.js'; 
 
 dotenv.config();
 
