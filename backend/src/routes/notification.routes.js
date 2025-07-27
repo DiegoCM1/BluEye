@@ -1,7 +1,7 @@
 // backend/src/routes/notification.routes.js
 
 import { Router } from 'express';
-import { sendAllNotifications } from '../services/notificationService.js';
+import { sendAllNotifications } from '../services/notification.js';
 
 const router = Router();
 
