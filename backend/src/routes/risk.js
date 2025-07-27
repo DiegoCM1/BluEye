@@ -1,7 +1,7 @@
 // backend/src/routes/risk.routes.js
 
 import { Router } from 'express';
-import { getRisk } from '../controllers/risk.controller.js';
+import { getRisk } from '../controllers/riskController.js';
 
 const router = Router();
 
