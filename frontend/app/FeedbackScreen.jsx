@@ -11,8 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useColorScheme } from "nativewind";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-const API_URL = "https://your-api.com/feedback"; // ← replace with your real endpoint
+import { submitFeedback } from "../services/feedbackService";
 
 export default function FeedbackScreen() {
   const { colorScheme } = useColorScheme();
@@ -42,12 +41,7 @@ export default function FeedbackScreen() {
 
     setLoading(true);
     try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rating, email, message }),
-      });
-      if (!res.ok) throw new Error("Error en el servidor");
+      await submitFeedback({ rating, email, message }); // ⬅︎ nuevo
 
       setSuccess(true);
       setRating(0);
