@@ -7,6 +7,7 @@ dotenv.config();
 const riskRoutes = require('./routes/risk');
 const alertsRoutes = require('./routes/alerts');
 const feedbackRoutes = require('./routes/feedback');
+const pushTokenRoutes = require('./routes/pushToken.routes')
 
 // Initialize database
 require('./services/db');
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/risk', riskRoutes);
 app.use('/alerts', alertsRoutes);
 app.use('/feedback', feedbackRoutes);
+app.use('/api', pushTokenRoutes);
 
 app.get('/health', (req, res) => {
   res.json({
