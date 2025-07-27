@@ -1,6 +1,6 @@
 # Frontend de BluEye
 
-Este paquete contiene la app realizada con React Native y Expo. Utiliza **Expo Router** para la navegación y comparte código entre la versión móvil y la web mediante componentes diferenciados `Main.native.jsx` y `Main.web.jsx`.
+Este paquete contiene la app realizada con React Native y Expo. Utiliza **Expo Router** para la navegación y comparte código entre la versión móvil y la web mediante componentes diferenciados `Main.native.jsx` y `Main.web.jsx`. Incluye además una pantalla de feedback para enviar comentarios al servidor.
 
 ## Uso rápido
 1. Ejecuta `npm install` para instalar las dependencias.
@@ -13,6 +13,8 @@ Este paquete contiene la app realizada con React Native y Expo. Utiliza **Expo R
 - `context/` – proveedores de tema y modo daltónico.
 - `global.css` y `tailwind.config.js` – estilos con Tailwind y colores personalizados.
 - `api/sendMessage.jsx` – helper que envía preguntas al asistente alojado en [ai-blueye](https://github.com/DiegoCM1/ai-blueye).
+- `FeedbackScreen.jsx` – formulario para enviar feedback que se guarda en el backend.
+- `services/feedbackService.js` – helper para comunicar la app con la API de feedback.
 - `open6.py` – prototipo en Streamlit para pruebas de la interfaz web del chatbot (no forma parte del build).
 
 ## Compilar con EAS
