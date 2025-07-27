@@ -1,6 +1,6 @@
 // backend/src/services/notification.js
 
-import admin from 'firebase-admin';
+import admin from './firebase.js';
 import pool from './db.js';
 
 /**
