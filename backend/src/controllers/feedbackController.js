@@ -7,6 +7,7 @@ const { createFeedback, getAllFeedback } = require('../data/feedbackStore');
  * Body: { rating, email?, message }
  */
 async function createFeedbackHandler(req, res) {
+  console.log('BODY RECEIVED:', req.body);
   const { rating, email, message } = req.body;
 
   // Validaciones básicas
