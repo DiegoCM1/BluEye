@@ -1,6 +1,7 @@
 // backend/src/controllers/alerts.controller.js
 
-import alertsStore from '../data/alertsStore.js';
+// Import the alert store functions directly as there is no default export
+import * as alertsStore from '../data/alertsStore.js';
 
 export function listAlerts(req, res) {
   res.json(alertsStore.getAll());
