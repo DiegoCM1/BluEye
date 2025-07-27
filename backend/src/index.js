@@ -10,9 +10,8 @@ import feedbackRoutes from './routes/feedback.js';
 import pushTokenRoutes from './routes/pushToken.routes.js';
 
 // Inicializa la conexión a la base de datos (puede que exportes el pool ahí)
-import './services/db.js';
-// o, si tu db.js exporta directamente el pool:
-// import pool from './services/db.js';
+// Import the database pool to use it in health checks
+import pool from './services/db.js';
 
 dotenv.config();
 
