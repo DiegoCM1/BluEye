@@ -22,7 +22,7 @@ export default function FeedbackScreen() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Validation
+  // Validation 
   const validate = () => {
     const newErrors = {};
     if (rating === 0)
