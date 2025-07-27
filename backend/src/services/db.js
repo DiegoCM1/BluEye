@@ -1,16 +1,20 @@
+// src/services/db.js
 const { Pool } = require('pg');
 
+// Inicializa un pool de conexiones usando la URL de conexión de env
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  ssl: process.env.DB_SSL === 'true'
+  connectionString: process.env.DATABASE_URL,
+  // si tu DATABASE_URL lleva sslmode=require, podrías omitir esta sección,
+  // pero explicítalo para entornos que requieran verificación:
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
-pool.on('connect', () => {
-  console.log('Connected to PostgreSQL');
+// Opcional: escucha errores del pool para logging
+pool.on('error', (err) => {
+  console.error('Unexpected error on idle PostgreSQL client', err);
+  process.exit(-1);
 });
 
 module.exports = pool;
