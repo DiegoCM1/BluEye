@@ -28,5 +28,18 @@ export async function sendAllNotifications({ title, body, data = {} }) {
     // Desde firebase-admin v13, el método se llama `sendEachForMulticast`
     // y reemplaza al antiguo `sendMulticast`.
     const response = await admin.messaging().sendEachForMulticast(message);
+
+    // Limpia tokens que fallaron
+    const invalidTokens = response.responses
+        .map((r, i) => (!r.success ? tokens[i] : null))
+        .filter(Boolean);
+
+    if (invalidTokens.length) {
+        await pool.query(
+            'DELETE FROM device_tokens WHERE token = ANY($1::text[])',
+            [invalidTokens]
+        );
+    }
+
     return response;
 }
