@@ -36,7 +36,7 @@ export async function registerForPushNotificationsAsync() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token: fcmToken }),
     });
-    console.log('Token enviado al backend');
+    console.log('Token enviado al backend (frontend)');
   } catch (error) {
     console.error('Error enviando token al backend:', error);
   }
