@@ -10,21 +10,23 @@ import pool from './db.js';
  * @returns {Promise<import('firebase-admin').messaging.BatchResponse>}
  */
 export async function sendAllNotifications({ title, body, data = {} }) {
-  // 1) Recuperar todos los tokens de la BD
-  const { rows } = await pool.query('SELECT token FROM device_tokens');
-  const tokens = rows.map((r) => r.token).filter(Boolean);
-  if (tokens.length === 0) {
-    throw new Error('No hay tokens registrados');
-  }
+    // 1) Recuperar todos los tokens de la BD
+    const { rows } = await pool.query('SELECT token FROM device_tokens');
+    const tokens = rows.map((r) => r.token).filter(Boolean);
+    if (tokens.length === 0) {
+        throw new Error('No hay tokens registrados');
+    }
 
-  // 2) Construir el mensaje
-  const message = {
-    notification: { title, body },
-    data,
-    tokens,
-  };
+    // 2) Construir el mensaje
+    const message = {
+        notification: { title, body },
+        data,
+        tokens,
+    };
 
-  // 3) Enviar usando la API clásica de Firebase Admin
-  const response = await admin.messaging().sendMulticast(message);
-  return response;
+    // 3) Enviar usando la API moderna de Firebase Admin
+    // Desde firebase-admin v13, el método se llama `sendEachForMulticast`
+    // y reemplaza al antiguo `sendMulticast`.
+    const response = await admin.messaging().sendEachForMulticast(message);
+    return response;
 }
