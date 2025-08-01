@@ -19,6 +19,7 @@
     "@tamagui/themes": "^1.116.15",
     "@tamagui/web": "1.116.15",
     "axios": "^1.9.0",
+    "dayjs": "^1.11.13",
     "expo": "~53.0.0",
     "expo-audio": "^0.4.6",
     "expo-camera": "~16.1.7",
@@ -43,10 +44,9 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-toast-message": "^2.3.3",
-    "tailwindcss": "^3.4.15",
-    "tamagui": "^1.116.15",
     "swr": "^2.2.4",
-    "dayjs": "^1.11.10"
+    "tailwindcss": "^3.4.15",
+    "tamagui": "^1.116.15"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
