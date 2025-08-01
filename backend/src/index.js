@@ -1,5 +1,4 @@
 // backend/src/index.js
-
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -8,12 +7,12 @@ import riskRoutes from './routes/risk.js';
 import alertsRoutes from './routes/alerts.js';
 import feedbackRoutes from './routes/feedback.js';
 import pushTokenRoutes from './routes/pushToken.routes.js';
+import apiKeyAuth from './middleware/apiKeyAuth.js';          // ← import existente
 
-// Inicializa la conexión a la base de datos (puede que exportes el pool ahí)
-// Import the database pool to use it in health checks
+// Inicializa la conexión a la base de datos
 import pool from './services/db.js';
-import notificationRoutes from './routes/notification.routes.js'; //Notifications script
-import './services/firebase.js'; 
+import notificationRoutes from './routes/notification.routes.js';
+import './services/firebase.js';
 
 dotenv.config();
 
@@ -27,21 +26,21 @@ app.use('/risk', riskRoutes);
 app.use('/alerts', alertsRoutes);
 app.use('/feedback', feedbackRoutes);
 app.use('/api', pushTokenRoutes);
-app.use('/api/notifications', notificationRoutes);
 
-// Health check simple
+// 🔐 Protegemos todas las rutas /api/notifications/*
+app.use('/api/notifications', apiKeyAuth, notificationRoutes); // ← cambio clave
+
+// Health checks …
 app.get('/health', (req, res) => {
   res.json({
     status: 'OK',
     timestamp: new Date().toISOString(),
-    message: 'BlueEye backend running'
+    message: 'BlueEye backend running',
   });
 });
 
-// Health check de BD
 app.get('/health-db', async (req, res) => {
   try {
-    // Si tu db.js exporta `pool` de pg.Pool:
     const { rows } = await pool.query('SELECT 1');
     return res.status(200).json({ status: 'OK', db: 'reachable', rows });
   } catch (err) {
@@ -54,5 +53,4 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
-// Si necesitas exportar `app` para tests u otros usos:
 export default app;
