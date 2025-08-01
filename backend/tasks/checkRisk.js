@@ -19,6 +19,12 @@ async function checkRisk() {
   const risk = await fetchRiskData(LAT, LON);
   const { riskScore: score, riskLevel: level, factors, recommendations } = risk;
 
+
+  /*  LOGS DE DEPURACIÓN  ---------------------------- */
+  console.log('[debug] raw risk object →', JSON.stringify(risk, null, 2));
+  console.log('[debug] score:', score, '| level:', level);
+  /* ------------------------------------------------ */
+
   if (score <= 30) {
     console.log('[checkRisk] Score', score, '→ sin alerta');
     return;
