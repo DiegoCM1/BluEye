@@ -21,6 +21,10 @@ El servidor escucha en el puerto definido por `PORT` (3002 por defecto) y se con
 - **GET `/alerts`** y **GET `/alerts/:id`**: consulta de alertas guardadas.
 - **POST `/feedback`**: almacena la opinión del usuario.
 
+## Testeo de notificaciones
+1. Agrega `export NOTIF_API_KEY="API_Key"` en tu terminal para que cargar la credencial en tu sesión actual
+2. Utiliza una estructura como esta: `curl -X POST "https://metaquetzal-production.up.railway.app/api/notifications/send-all"   -H "x-api-key: $NOTIF_API_KEY"   -H "Content-Type: application/json"   -d '{"title":"️️ Lluvias intensas","body":"Tap para ver recomendaciones","data":{"alertId":"699e3e22-d19e-4 4eab-bd52-83ab405b4c53","alertLevel":"4"}}'`
+
 ## Contribuir
 1. Haz *fork* y crea una rama con tu propuesta.
 2. Envía un *pull request* descriptivo.
