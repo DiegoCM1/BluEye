@@ -40,7 +40,7 @@ export default function AlertsHistoryScreen() {
     >
       <PageTitle>Historial de alertas</PageTitle>
       <FlatList
-        contentContainerStyle={{ padding: 16 }}
+        contentContainerStyle={{ padding: 12 }}
         data={data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (

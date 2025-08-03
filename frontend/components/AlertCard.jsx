@@ -13,7 +13,7 @@ export default function AlertCard({ alert, onPress }) {
 
   return (
     <Pressable
-      className="w-full border-b border-b-gray-200 dark:border-b-gray-700"
+      className="w-full border-b border-b-gray-200 dark:border-b-gray-700 rounded-lg mb-2"
       style={{ backgroundColor: bgForLevel(level) }}
       android_ripple={{ color: '#ccc' }}
       onPress={onPress}
@@ -30,18 +30,18 @@ export default function AlertCard({ alert, onPress }) {
       </View>
 
       {/* descripción + botones */}
-      <View className="flex-row items-start px-4 pb-4">
+      <View className="flex-row items-start px-4 pb-2">
         <Text className="text-base w-4/6 text-phase2SecondaryTxt dark:text-phase2SecondaryTxtDark pr-2">
           {description}
         </Text>
-        <View className="space-y-2 w-2/6">
+        <View className="space-y-2 w-2/6 h-24">
           <TouchableOpacity
-            className="bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-lg justify-center items-center h-10 ml-auto"
+            className="bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-lg justify-center items-center h-10 ml-auto mb-2"
             onPress={() => console.log('TODO: Ver en mapa', id)}
           >
             <Text className="text-white dark:text-phase2TitlesDark font-bold px-2">Ver en mapa</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          <TouchableOpacity 
             className="bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-lg justify-center items-center h-10 ml-auto"
             onPress={onPress}
           >
