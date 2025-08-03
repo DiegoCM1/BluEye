@@ -1,10 +1,9 @@
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import useAlerts from '../../hooks/useAlerts';
-import AlertCard from '../../components/AlertCard';
-import PageTitle from '../../components/PageTitle';
-
+import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+import useAlerts from "../../hooks/useAlerts";
+import AlertCard from "../../components/AlertCard";
+import PageTitle from "../../components/PageTitle";
 
 export default function AlertsHistoryScreen() {
   const router = useRouter();
@@ -37,7 +36,7 @@ export default function AlertsHistoryScreen() {
   return (
     <SafeAreaView
       className="flex-1 bg-white dark:bg-neutral-900"
-      edges={["left", "right", "bottom"]}
+      edges={["bottom"]}
     >
       <PageTitle>Historial de alertas</PageTitle>
       <FlatList
@@ -48,7 +47,10 @@ export default function AlertsHistoryScreen() {
           <AlertCard
             alert={item}
             onPress={() =>
-              router.push({ pathname: 'AlertDetailsScreen', params: { id: item.id } })
+              router.push({
+                pathname: "AlertDetailsScreen",
+                params: { id: item.id },
+              })
             }
           />
         )}
