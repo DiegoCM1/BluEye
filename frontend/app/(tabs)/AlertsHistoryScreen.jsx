@@ -35,7 +35,11 @@ export default function AlertsHistoryScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-neutral-900" edges={['left','right','bottom']}>
+    <SafeAreaView
+      className="flex-1 bg-white dark:bg-neutral-900"
+      edges={["left", "right", "bottom"]}
+    >
+      <PageTitle>Historial de alertas</PageTitle>
       <FlatList
         contentContainerStyle={{ padding: 16 }}
         data={data}
