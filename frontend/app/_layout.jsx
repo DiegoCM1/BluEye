@@ -8,15 +8,20 @@ import { DaltonicModeProvider } from "../context/DaltonicModeContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useColorScheme } from "nativewind";
 import { useEffect } from "react";
+import { useRouter } from "expo-router";
 import {
   registerForPushNotificationsAsync,
   setForegroundNotificationHandler,
   addNotificationResponseListener,
 } from "../utils/pushNotifications";
+import * as Notifications from 'expo-notifications'; 
 import Toast from "react-native-toast-message";
 
 /* ---------- Layout raíz ---------- */
 export default function Layout() {
+
+  const router = useRouter(); 
+
   const { colorScheme } = useColorScheme();
 
   // ⚡ Solicitar token FCM al montar
@@ -44,6 +49,18 @@ export default function Layout() {
 
     return () => sub.remove(); // limpia al desmontar
   }, []);
+
+  useEffect(() => {
+  // Si la app se abrió tocando una notificación, esta llamada la devuelve
+  (async () => {
+    const initial = await Notifications.getLastNotificationResponseAsync();
+    const alertId = initial?.notification?.request?.content?.data?.alertId;
+    if (alertId) {
+      router.push({ pathname: 'AlertDetailsScreen', params: { id: alertId } });
+    }
+  })();
+}, []);
+
 
   const headerBg =
     colorScheme === "dark" ? "rgb(40, 60, 80)" : "rgb(60, 200, 220)";
