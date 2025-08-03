@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
   const offset = parseInt(req.query.offset) || 0;
 
   const { rows } = await pool.query(
-    `SELECT id, timestamp, level, score
+    `SELECT id, timestamp, level, score, title, short
        FROM alerts
       ORDER BY timestamp DESC
       LIMIT $1 OFFSET $2`,
