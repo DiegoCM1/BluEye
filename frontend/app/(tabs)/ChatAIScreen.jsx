@@ -264,14 +264,14 @@ export default function ChatAIScreen() {
                 }`}
               >
                 <View
-                  className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                  className={`rounded-2xl px-4 py-3 ${
                     item.sender === "user"
-                      ? "bg-phase2Buttons rounded-tr-none"
-                      : "bg-phase2Cards dark:bg-phase2CardsDark rounded-tl-none"
+                      ? "max-w-[80%] bg-phase2Buttons rounded-tr-none"
+                      : "dark:text-phase2Cards rounded-tl-none"
                   }`}
                 >
                   <Text
-                    className={`text-base ${
+                    className={`text-lg ${
                       item.sender === "user"
                         ? "text-white"
                         : "text-phase2Titles dark:text-white"
