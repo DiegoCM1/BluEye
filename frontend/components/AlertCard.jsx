@@ -3,26 +3,24 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import dayjs from "../utils/date";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
-
-const bgForLevel = (l) =>
-  ({
-    1: "rgba(74,222,128,.15)",
-    2: "rgba(74,222,128,.15)",
-    3: "rgba(250,204,21,.15)",
-    4: "rgba(248,113,113,.15)",
-    5: "rgba(239,68,68,.15)",
-  })[l] ?? "rgba(96,165,250,.15)";
+const colorForScore = (s) => {
+  if (s <= 33) return "#4ade8033";
+  if (s <= 66) return "#facc1533";
+  return "#ef444433";
+};
 
 export default function AlertCard({ alert, onPress }) {
   const { id, level, title, short: description, timestamp } = alert;
 
-    const router = useRouter();
+  const router = useRouter();
   const { id: paramId } = useLocalSearchParams();
+
+  const bannerColor = colorForScore(alert.score ?? 0);
 
   return (
     <Pressable
       className="w-full border-b border-b-gray-200 dark:border-b-gray-700 rounded-lg mb-2"
-      style={{ backgroundColor: bgForLevel(level) }}
+      style={{ backgroundColor: bannerColor }}
       android_ripple={{ color: "#ccc" }}
       onPress={onPress}
     >

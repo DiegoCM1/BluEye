@@ -15,9 +15,9 @@ const API_URL = "https://metaquetzal-production.up.railway.app";
 
 // helpers
 const colorForScore = (s) => {
-  if (s <= 33) return "#4ade80"; // green
-  if (s <= 66) return "#facc15"; // yellow
-  return "#ef4444"; // red
+  if (s <= 33) return "#4ade8080";
+  if (s <= 66) return "#facc1580";
+  return "#ef444480";
 };
 
 export default function AlertDetailsScreen() {
