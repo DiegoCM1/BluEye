@@ -104,14 +104,6 @@ export default function Layout() {
                     options={{ title: "Detalles de Alerta" }}
                   />
                   <Stack.Screen
-                    name="ChatAIScreen"
-                    options={{ title: "Chat-AI" }}
-                  />
-                  <Stack.Screen
-                    name="AlertsHistoryScreen"
-                    options={{ title: "Alertas" }}
-                  />
-                  <Stack.Screen
                     name="AboutScreen"
                     options={{ title: "Acerca de nosotros" }}
                   />
