@@ -3,11 +3,14 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import dayjs from "../utils/date";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
-const colorForScore = (s) => {
-  if (s <= 33) return "#4ade8033";
-  if (s <= 66) return "#facc1533";
-  return "#ef444433";
-};
+export const colorForLevel = (l) =>
+  ({
+    1: "#3B82F6", // azul
+    2: "#22C55E", // verde
+    3: "#FACC15", // amarillo
+    4: "#FB923C", // naranja
+    5: "#EF4444", // rojo
+  }[l]);
 
 export default function AlertCard({ alert, onPress }) {
   const { id, level, title, short: description, timestamp } = alert;
@@ -15,7 +18,7 @@ export default function AlertCard({ alert, onPress }) {
   const router = useRouter();
   const { id: paramId } = useLocalSearchParams();
 
-  const bannerColor = colorForScore(alert.score ?? 0);
+  const bannerColor = `${colorForLevel(level)}33`;
 
   return (
     <Pressable
@@ -47,6 +50,7 @@ export default function AlertCard({ alert, onPress }) {
         <View className="space-y-2 w-2/6 h-24">
           <TouchableOpacity
             className="bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-lg justify-center items-center h-10 ml-auto mb-2"
+            android_ripple={{ color: "#ffffff33" }}
             onPress={() => router.push("/MapScreen")}
           >
             <Text className="text-white dark:text-phase2TitlesDark font-bold px-2">
@@ -55,6 +59,7 @@ export default function AlertCard({ alert, onPress }) {
           </TouchableOpacity>
           <TouchableOpacity
             className="bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-lg justify-center items-center h-10 ml-auto"
+            android_ripple={{ color: "#ffffff33" }}
             onPress={onPress}
           >
             <Text className="text-white dark:text-phase2TitlesDark font-bold px-2">

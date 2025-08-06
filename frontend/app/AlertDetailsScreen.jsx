@@ -10,15 +10,9 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import dayjs from "../utils/date";
+import { colorForLevel } from "../components/AlertCard";
 
 const API_URL = "https://metaquetzal-production.up.railway.app";
-
-// helpers
-const colorForScore = (s) => {
-  if (s <= 33) return "#4ade8080";
-  if (s <= 66) return "#facc1580";
-  return "#ef444480";
-};
 
 export default function AlertDetailsScreen() {
   const { id } = useLocalSearchParams();
@@ -69,10 +63,14 @@ export default function AlertDetailsScreen() {
     );
 
   /* UI */
-  const bannerColor = colorForScore(alert.score ?? 0);
+  const baseColor = colorForLevel(alert.level);
+  const bannerColor = `${baseColor}80`;
 
   return (
-    <View className="flex-1 bg-white dark:bg-neutral-900">
+    <View
+      className="flex-1 bg-white dark:bg-neutral-900"
+      style={{ borderColor: baseColor, borderWidth: 2 }}
+    >
       {/* banner */}
       <View
         style={{ backgroundColor: bannerColor }}
@@ -179,6 +177,7 @@ export default function AlertDetailsScreen() {
       <View className="px-4 pb-6 flex-row justify-between gap-3">
         <TouchableOpacity
           className="flex-1 bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-2xl py-3 items-center"
+          android_ripple={{ color: "#ffffff33" }}
           onPress={() => router.push("/MapScreen")}
         >
           <Text className="text-white dark:text-phase2TitlesDark font-bold">
@@ -187,6 +186,7 @@ export default function AlertDetailsScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           className="flex-1 bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-2xl py-3 items-center"
+          android_ripple={{ color: "#ffffff33" }}
           onPress={() => console.log("TODO: Boletín oficial", id)}
         >
           <Text className="text-white dark:text-phase2TitlesDark font-bold">
