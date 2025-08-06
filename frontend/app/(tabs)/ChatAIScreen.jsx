@@ -1,5 +1,6 @@
 import "../../global.css";
 import React, { useState } from "react";
+import Markdown from "react-native-markdown-display";
 import {
   View,
   TextInput,
@@ -12,6 +13,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  useColorScheme,
 } from "react-native";
 import {
   SafeAreaView,
@@ -29,6 +31,13 @@ export default function ChatAIScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const insets = useSafeAreaInsets(); // ← gives you { top, bottom, left, right }
   const tabBarHeight = useBottomTabBarHeight();
+  const colorScheme = useColorScheme();
+  const markdownStyles = {
+    body: {
+      color: colorScheme === "dark" ? "white" : "rgb(30, 30, 60)",
+      fontSize: 18,
+    },
+  };
 
   // Persistent storage functions
   const loadMessages = async () => {
@@ -181,15 +190,11 @@ export default function ChatAIScreen() {
                       : "dark:text-phase2Cards rounded-tl-none"
                   }`}
                 >
-                  <Text
-                    className={`text-lg ${
-                      item.sender === "user"
-                        ? "text-white"
-                        : "text-phase2Titles dark:text-white"
-                    }`}
-                  >
-                    {item.text}
-                  </Text>
+                  {item.sender === "user" ? (
+                    <Text className="text-lg text-white">{item.text}</Text>
+                  ) : (
+                    <Markdown style={markdownStyles}>{item.text}</Markdown>
+                  )}
                 </View>
               </View>
             )}
