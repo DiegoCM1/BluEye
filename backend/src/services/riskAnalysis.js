@@ -2,6 +2,17 @@
 
 import axios from 'axios';
 
+/** Saffir–Simpson category (0-5) from wind speed in m/s */
+export function saffirCategoryFromWind(ms) {
+  const kmh = ms * 3.6;
+  if (kmh >= 252) return 5;
+  if (kmh >= 209) return 4;
+  if (kmh >= 178) return 3;
+  if (kmh >= 154) return 2;
+  if (kmh >= 119) return 1;
+  return 0; // sin categoría / tropical
+}
+
 export async function getCurrentWeather(lat, lon, apiKey) {
   if (!apiKey) {
     throw new Error('Missing OpenWeather API key');
@@ -134,18 +145,8 @@ export function calculateRiskLevel(currentWeather, forecast) {
   riskScore += forecastRisk.score;
   factors = factors.concat(forecastRisk.factors);
 
-  let level;
-  if (riskScore >= 80) {
-    level = 'extreme';
-  } else if (riskScore >= 60) {
-    level = 'high';
-  } else if (riskScore >= 30) {
-    level = 'medium';
-  } else {
-    level = 'low';
-  }
-
-  return { score: Math.min(riskScore, 100), level, factors };
+  const category = saffirCategoryFromWind(currentWeather.wind.speed);
+  return { score: Math.min(riskScore, 100), level: category, factors };
 }
 
 export function generateAlerts(riskAnalysis, currentWeather) {
@@ -202,33 +203,47 @@ export function generateAlerts(riskAnalysis, currentWeather) {
 
 export function generateBanner(riskAnalysis) {
   const banners = {
-    extreme: {
-      color: '#8B0000',
-      backgroundColor: '#FFE4E1',
-      text: '🚨 PELIGRO EXTREMO',
-      description: 'Condiciones meteorológicas extremas',
-      icon: '🚨',
+    1: {
+      color: '#3B82F6',
+      backgroundColor: '#DBEAFE',
+      text: '🌀 CATEGORÍA 1',
+      description: 'Vientos 119–153 km/h',
+      icon: '🌀',
     },
-    high: {
-      color: '#FF4500',
-      backgroundColor: '#FFF8DC',
-      text: '⚠️ ALTO RIESGO',
-      description: 'Condiciones meteorológicas peligrosas',
-      icon: '⚠️',
+    2: {
+      color: '#22C55E',
+      backgroundColor: '#DCFCE7',
+      text: '🌀 CATEGORÍA 2',
+      description: '154–177 km/h',
+      icon: '🌀',
     },
-    medium: {
-      color: '#FFA500',
-      backgroundColor: '#FFFACD',
-      text: '⚡ PRECAUCIÓN',
-      description: 'Condiciones meteorológicas adversas',
-      icon: '⚡',
+    3: {
+      color: '#FACC15',
+      backgroundColor: '#FEF9C3',
+      text: '🌀 CATEGORÍA 3',
+      description: '178–208 km/h',
+      icon: '🌀',
     },
-    low: {
-      color: '#32CD32',
-      backgroundColor: '#F0FFF0',
-      text: '✅ CONDICIONES NORMALES',
-      description: 'Condiciones meteorológicas estables',
-      icon: '✅',
+    4: {
+      color: '#FB923C',
+      backgroundColor: '#FFEDD5',
+      text: '🌀 CATEGORÍA 4',
+      description: '209–251 km/h',
+      icon: '🌀',
+    },
+    5: {
+      color: '#EF4444',
+      backgroundColor: '#FEE2E2',
+      text: '🌀 CATEGORÍA 5',
+      description: '≥ 252 km/h',
+      icon: '🌀',
+    },
+    0: {
+      color: '#60A5FA',
+      backgroundColor: '#DBEAFE',
+      text: '🌧️ BAJA',
+      description: 'Tormenta tropical',
+      icon: '🌧️',
     },
   };
   return banners[riskAnalysis.level];
@@ -236,7 +251,7 @@ export function generateBanner(riskAnalysis) {
 
 export function generateRecommendations(riskAnalysis) {
   const recommendations = {
-    extreme: [
+    5: [
       'Permanezca en un lugar seguro y resistente',
       'No conduzca a menos que sea absolutamente necesario',
       'Tenga agua y alimentos para 72 horas',
@@ -244,20 +259,29 @@ export function generateRecommendations(riskAnalysis) {
       'Escuche alertas oficiales de Protección Civil',
       'Evite ventanas y estructuras débiles',
     ],
-    high: [
+    4: [
       'Evite todas las actividades al aire libre',
       'Conduzca con extrema precaución o evítelo',
       'Asegure objetos que puedan volarse con el viento',
       'Tenga linterna, radio y suministros a mano',
       'Manténgase alejado de árboles y estructuras altas',
     ],
-    medium: [
+    3: [
       'Planifique actividades al aire libre con cuidado',
       'Lleve ropa adecuada para las condiciones',
       'Manténgase informado de cambios en el clima',
       'Tenga precaución extra al conducir',
     ],
-    low: [
+    2: [
+      'Planifique actividades al aire libre con cuidado',
+      'Manténgase informado de cambios en el clima',
+      'Tenga precaución al conducir',
+    ],
+    1: [
+      'Disfrute del día con precaución',
+      'Esté atento a actualizaciones del clima',
+    ],
+    0: [
       'Disfrute del día con normalidad',
       'Condiciones ideales para actividades al aire libre',
       'Mantenga rutina normal de actividades',
