@@ -16,6 +16,9 @@ export async function fetchRiskData(lat, lon) {
   if (!API_KEY) {
     throw new Error('Missing OpenWeather API key');
   }
+  // ⚠️ LOG TEMPORAL — no imprime la key completa
+  console.log('[owm:web] key prefix →', (API_KEY || '').slice(0, 6) + '…');
+
 
   const currentWeather = await getCurrentWeather(lat, lon, API_KEY);
   const forecast = await getForecast(lat, lon, API_KEY);
