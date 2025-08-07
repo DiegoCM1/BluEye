@@ -14,13 +14,14 @@ import {
   setForegroundNotificationHandler,
   addNotificationResponseListener,
 } from "../utils/pushNotifications";
-import * as Notifications from 'expo-notifications'; 
+import * as Notifications from "expo-notifications";
 import Toast from "react-native-toast-message";
+import { initAnalytics, track } from "../utils/analytics";
+import { usePathname } from "expo-router";
 
 /* ---------- Layout raíz ---------- */
 export default function Layout() {
-
-  const router = useRouter(); 
+  const router = useRouter();
 
   const { colorScheme } = useColorScheme();
 
@@ -39,28 +40,48 @@ export default function Layout() {
 
     // 👇 Cuando el usuario pulse la notificación
     const sub = addNotificationResponseListener((data) => {
-      // ejemplo: data podría traer { alertId: '123' }
-      if (data?.alertId)
+      if (data?.alertId) {
+        track("push_open", {
+          alertId: String(data.alertId),
+          alertLevel: data.alertLevel ? Number(data.alertLevel) : undefined,
+          origin: "listener",
+        });
         router.push({
           pathname: "AlertDetailsScreen",
           params: { id: data.alertId },
         });
+      }
     });
 
     return () => sub.remove(); // limpia al desmontar
   }, []);
 
-  useEffect(() => {
   // Si la app se abrió tocando una notificación, esta llamada la devuelve
-  (async () => {
-    const initial = await Notifications.getLastNotificationResponseAsync();
-    const alertId = initial?.notification?.request?.content?.data?.alertId;
-    if (alertId) {
-      router.push({ pathname: 'AlertDetailsScreen', params: { id: alertId } });
-    }
-  })();
-}, []);
+  useEffect(() => {
+    (async () => {
+      const initial = await Notifications.getLastNotificationResponseAsync();
+      const alertId = initial?.notification?.request?.content?.data?.alertId;
+      const alertLevel =
+        initial?.notification?.request?.content?.data?.alertLevel;
+      if (alertId) {
+        track("push_open", {
+          alertId: String(alertId),
+          alertLevel: alertLevel ? Number(alertLevel) : undefined,
+          origin: "initial",
+        });
+        router.push({
+          pathname: "AlertDetailsScreen",
+          params: { id: alertId },
+        });
+      }
+    })();
+  }, []);
 
+  // Registra la pantalla actual en Mixpanel
+  const pathname = usePathname();
+  useEffect(() => {
+    if (pathname) track("screen_view", { screen: pathname });
+  }, [pathname]);
 
   const headerBg =
     colorScheme === "dark" ? "rgb(40, 60, 80)" : "rgb(60, 200, 220)";
