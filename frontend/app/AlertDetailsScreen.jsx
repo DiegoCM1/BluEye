@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   ScrollView,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -22,6 +23,9 @@ export default function AlertDetailsScreen() {
   const [alert, setAlert] = useState(null);
   const [loading, setLoad] = useState(true);
   const [error, setError] = useState(null);
+
+    const showComingSoon = () =>
+      Alert.alert("¡Próximamente!", "Esta opción estará disponible muy pronto.");
 
   /* fetch */
   useEffect(() => {
@@ -187,7 +191,7 @@ export default function AlertDetailsScreen() {
       {/* acciones */}
       <View className="px-4 pb-6 flex-row justify-between gap-3">
         <TouchableOpacity
-          className="flex-1 bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-2xl py-3 items-center"
+          className="flex-1 bg-phase2Buttons dark:bg-phase2CardsDark rounded-2xl py-3 items-center"
           android_ripple={{ color: "#ffffff33" }}
           onPress={() => {
             track("details_map_tap", {
@@ -203,7 +207,7 @@ export default function AlertDetailsScreen() {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          className="flex-1 bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-2xl py-3 items-center"
+          className="flex-1 bg-phase2Buttons dark:bg-phase2CardsDark rounded-2xl py-3 items-center"
           android_ripple={{ color: "#ffffff33" }}
           onPress={() => {
             track("details_boletin_tap", {
@@ -211,7 +215,7 @@ export default function AlertDetailsScreen() {
               level: Number(alert.level),
               score: Number(alert.score ?? 0),
             });
-            console.log("TODO: Boletín oficial", id);
+            showComingSoon();
           }}
         >
           <Text className="text-white dark:text-phase2TitlesDark font-bold">

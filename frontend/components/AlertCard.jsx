@@ -55,23 +55,14 @@ export default function AlertCard({ alert, onPress }) {
         <Text className="text-base w-4/6 text-phase2SecondaryTxt dark:text-phase2SecondaryTxtDark pr-2">
           {description}
         </Text>
-        <View className="space-y-2 w-2/6 h-24">
+        <View className="space-y-2 w-2/6 h-20">
           <TouchableOpacity
-            className="bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-lg justify-center items-center h-10 ml-auto mb-2"
+            className="bg-phase2Buttons dark:bg-phase2CardsDark rounded-lg justify-center items-center h-10 ml-auto mb-2"
             android_ripple={{ color: "#ffffff33" }}
             onPress={() => router.push("/MapScreen")}
           >
             <Text className="text-white dark:text-phase2TitlesDark font-bold px-2">
               Ver en mapa
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            className="bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-lg justify-center items-center h-10 ml-auto"
-            android_ripple={{ color: "#ffffff33" }}
-            onPress={onPress}
-          >
-            <Text className="text-white dark:text-phase2TitlesDark font-bold px-2">
-              Más detalles
             </Text>
           </TouchableOpacity>
         </View>
