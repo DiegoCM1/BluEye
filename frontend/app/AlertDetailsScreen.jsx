@@ -122,15 +122,7 @@ export default function AlertDetailsScreen() {
               {alert.level}
             </Text>
             <Text className="text-xs text-phase2SecondaryTxt dark:text-phase2SecondaryTxtDark">
-              Nivel
-            </Text>
-          </View>
-          <View className="items-center">
-            <Text className="font-bold text-lg text-phase2Titles dark:text-phase2TitlesDark">
-              {alert.score}
-            </Text>
-            <Text className="text-xs text-phase2SecondaryTxt dark:text-phase2SecondaryTxtDark">
-              Score
+              Nivel de categoría
             </Text>
           </View>
         </View>
