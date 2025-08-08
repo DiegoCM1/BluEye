@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useColorScheme } from "nativewind";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { submitFeedback } from "../services/feedbackService";
+import { track } from "../utils/analytics";
 
 export default function FeedbackScreen() {
   const { colorScheme } = useColorScheme();
@@ -22,7 +23,7 @@ export default function FeedbackScreen() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Validation 
+  // Validation
   const validate = () => {
     const newErrors = {};
     if (rating === 0)
@@ -42,6 +43,11 @@ export default function FeedbackScreen() {
     setLoading(true);
     try {
       await submitFeedback({ rating, email, message }); // ⬅︎ nuevo
+      track("feedback_submit", {
+        hasText: message.trim().length > 0,
+        length: message.trim().length,
+        screen: "FeedbackScreen",
+      });
 
       setSuccess(true);
       setRating(0);
