@@ -1,3 +1,4 @@
+// Component for displaying an emergency alert modal with options to view on map or get more details. Not displayed on production.
 import { useState, useEffect } from "react";
 import { Modal, View, Text, TouchableOpacity } from "react-native";
 import { Link, useRouter } from "expo-router";

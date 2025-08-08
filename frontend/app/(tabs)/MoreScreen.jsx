@@ -8,18 +8,25 @@ import PageTitle from "../../components/PageTitle";
 
 export default function MoreScreen() {
   const navigation = useNavigation();
-  const colorScheme = useColorScheme();          // "light" | "dark"
+  const colorScheme = useColorScheme(); // "light" | "dark"
 
   // palette
-  const iconColor   = colorScheme === "dark" ? "rgb(60, 200, 220)" : "#1F2937"; // blue‑400 / gray‑800
-  const arrowColor  = colorScheme === "dark" ? "rgb(60, 200, 220)" : "#111827"; // blue‑300 / gray‑400
-  const textColor   = colorScheme === "dark" ? "rgb(230, 230, 250)" : "#111827"; // blue‑100 / gray‑900
+  const iconColor = colorScheme === "dark" ? "rgb(60, 200, 220)" : "#1F2937"; // blue‑400 / gray‑800
+  const arrowColor = colorScheme === "dark" ? "rgb(60, 200, 220)" : "#111827"; // blue‑300 / gray‑400
+  const textColor = colorScheme === "dark" ? "rgb(230, 230, 250)" : "#111827"; // blue‑100 / gray‑900
 
   const items = [
-    { label: "Ajustes",            icon: "cog-outline",           screen: "SettingsScreen" },
-    { label: "Alarma",             icon: "alarm",                 screen: "AlarmScreen"    },
-    { label: "Feedback",           icon: "message-reply-outline", screen: "FeedbackScreen" },
-    { label: "Acerca de nosotros", icon: "information-outline",           screen: "AboutScreen"    },
+    { label: "Ajustes", icon: "cog-outline", screen: "SettingsScreen" },
+    {
+      label: "Feedback",
+      icon: "message-reply-outline",
+      screen: "FeedbackScreen",
+    },
+    {
+      label: "Acerca de nosotros",
+      icon: "information-outline",
+      screen: "AboutScreen",
+    },
   ];
 
   return (
@@ -43,10 +50,7 @@ export default function MoreScreen() {
             style={{ marginRight: 16 }}
           />
 
-          <Text
-            style={{ color: textColor }}
-            className="flex-1 text-base"
-          >
+          <Text style={{ color: textColor }} className="flex-1 text-base">
             {label}
           </Text>
 
