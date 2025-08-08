@@ -17,7 +17,7 @@ import {
 } from "../utils/pushNotifications";
 import * as Notifications from "expo-notifications";
 import Toast from "react-native-toast-message";
-import { initAnalytics, track } from "../utils/analytics";
+import { initAnalytics, track, flush } from "../utils/analytics";
 import { usePathname } from "expo-router";
 
 /* ---------- Layout raíz ---------- */
@@ -99,6 +99,7 @@ export default function Layout() {
     const sub = AppState.addEventListener("change", (state) => {
       if (state === "background") {
         track("app_background");
+        flush();
       }
     });
     return () => sub.remove();
