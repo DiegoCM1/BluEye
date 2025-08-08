@@ -1,6 +1,7 @@
 // frontend/utils/analytics.js
 import { Mixpanel } from 'mixpanel-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
 let mp = null;
 
@@ -30,10 +31,9 @@ export async function initAnalytics() {
   await mp.identify(distinctId);
 
   // Super props básicos
-  await mp.registerSuperProperties({
-    app: 'BluEye',
-    platform: 'android',
-    build: 'dev', // cambia a 'production' en release si quieres
+  mp.registerSuperProperties({
+    platform: Platform.OS,           // "android"
+    build: __DEV__ ? 'dev' : 'prod', // dev en debug, prod en release
   });
 
   return mp;

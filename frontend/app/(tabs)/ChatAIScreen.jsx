@@ -170,7 +170,7 @@ export default function ChatAIScreen() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={insets.bottom + tabBarHeight + 5}
       >
-        <View className="flex-1 px-4 pt-2">
+        <View className="flex-1 px-2 pt-2">
           {/* Messages List */}
           <FlatList
             data={messages}

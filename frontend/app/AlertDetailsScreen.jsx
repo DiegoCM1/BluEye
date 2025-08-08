@@ -84,12 +84,11 @@ export default function AlertDetailsScreen() {
   return (
     <View
       className="flex-1 bg-white dark:bg-neutral-900"
-      style={{ borderColor: baseColor, borderWidth: 2 }}
     >
       {/* banner */}
       <View
         style={{ backgroundColor: bannerColor }}
-        className="pt-10 pb-6 px-5 items-center"
+        className="pt-10 pb-6 px-5 items-center rounded-b-md"
       >
         <MaterialCommunityIcons
           name="weather-hurricane"
@@ -167,25 +166,13 @@ export default function AlertDetailsScreen() {
                 • {f}
               </Text>
             ))}
-            <Text className="mb-1 text-phase2SecondaryTxt dark:text-phase2SecondaryTxtDark">
-              • Latitud
-            </Text>
-            <Text className="mb-1 text-phase2SecondaryTxt dark:text-phase2SecondaryTxtDark">
-              • Altitud
-            </Text>
-            <Text className="mb-1 text-phase2SecondaryTxt dark:text-phase2SecondaryTxtDark">
-              • Radio
-            </Text>
-            <Text className="mb-1 text-phase2SecondaryTxt dark:text-phase2SecondaryTxtDark">
-              • Vientos
-            </Text>
           </View>
         )}
 
         {/* id */}
-        <Text className="text-xs text-neutral-500 dark:text-phase2SecondaryTxtDark mt-4">
+        {/* <Text className="text-xs text-neutral-500 dark:text-phase2SecondaryTxtDark mt-4">
           ID: {alert.id}
-        </Text>
+        </Text> */}
       </ScrollView>
 
       {/* acciones */}
