@@ -25,6 +25,10 @@ export default function Layout() {
 
   const { colorScheme } = useColorScheme();
 
+  useEffect(() => {
+    initAnalytics().catch(console.error);
+  }, []);
+
   // ⚡ Solicitar token FCM al montar
   useEffect(() => {
     registerForPushNotificationsAsync()
@@ -39,8 +43,9 @@ export default function Layout() {
     setForegroundNotificationHandler();
 
     // 👇 Cuando el usuario pulse la notificación
-    const sub = addNotificationResponseListener((data) => {
+    const sub = addNotificationResponseListener(async (data) => {
       if (data?.alertId) {
+        await initAnalytics();
         track("push_open", {
           alertId: String(data.alertId),
           alertLevel: data.alertLevel ? Number(data.alertLevel) : undefined,
@@ -64,6 +69,7 @@ export default function Layout() {
       const alertLevel =
         initial?.notification?.request?.content?.data?.alertLevel;
       if (alertId) {
+        await initAnalytics();
         track("push_open", {
           alertId: String(alertId),
           alertLevel: alertLevel ? Number(alertLevel) : undefined,
@@ -80,7 +86,12 @@ export default function Layout() {
   // Registra la pantalla actual en Mixpanel
   const pathname = usePathname();
   useEffect(() => {
-    if (pathname) track("screen_view", { screen: pathname });
+    if (pathname) {
+      (async () => {
+        await initAnalytics();
+        track("screen_view", { screen: pathname });
+      })();
+    }
   }, [pathname]);
 
   const headerBg =
