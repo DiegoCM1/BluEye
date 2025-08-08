@@ -223,15 +223,15 @@ export function generateAlerts(riskAnalysis, currentWeather) {
 export function generateBanner(riskAnalysis) {
   const banners = {
     1: {
-      color: '#3B82F6',
-      backgroundColor: '#DBEAFE',
+      color: '#22C55E',
+      backgroundColor: '#DCFCE7',
       text: '🌀 CATEGORÍA 1',
       description: 'Vientos 119–153 km/h',
       icon: '🌀',
     },
     2: {
-      color: '#22C55E',
-      backgroundColor: '#DCFCE7',
+      color: '#15803D',
+      backgroundColor: '#BBF7D0',
       text: '🌀 CATEGORÍA 2',
       description: '154–177 km/h',
       icon: '🌀',
@@ -244,15 +244,15 @@ export function generateBanner(riskAnalysis) {
       icon: '🌀',
     },
     4: {
-      color: '#FB923C',
-      backgroundColor: '#FFEDD5',
+      color: '#EF4444',
+      backgroundColor: '#FEE2E2',
       text: '🌀 CATEGORÍA 4',
       description: '209–251 km/h',
       icon: '🌀',
     },
     5: {
-      color: '#EF4444',
-      backgroundColor: '#FEE2E2',
+      color: '#C026D3',
+      backgroundColor: '#FAE8FF',
       text: '🌀 CATEGORÍA 5',
       description: '≥ 252 km/h',
       icon: '🌀',
