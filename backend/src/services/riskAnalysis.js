@@ -145,19 +145,22 @@ export function calculateRiskLevel(currentWeather, forecast) {
   riskScore += forecastRisk.score;
   factors = factors.concat(forecastRisk.factors);
 
-  const category = saffirCategoryFromWind(currentWeather.wind.speed);
+  const category = saffirCategoryFromWind(windSpeed);
   return { score: Math.min(riskScore, 100), level: category, factors };
 }
 
 export function generateAlerts(riskAnalysis, currentWeather) {
   const alerts = [];
 
-  if (riskAnalysis.level === 'extreme') {
+  const level = riskAnalysis.level;
+
+  if (level >= 5) {
     alerts.push({
       type: 'EMERGENCY',
       category: 5,
       title: 'ALERTA METEOROLÓGICA EXTREMA',
-      message: 'Condiciones meteorológicas extremas detectadas. Evacue si es necesario.',
+      message:
+        'Condiciones meteorológicas extremas detectadas. Evacue si es necesario.',
       priority: 'high',
       actions: [
         'Busque refugio inmediatamente',
@@ -167,12 +170,13 @@ export function generateAlerts(riskAnalysis, currentWeather) {
       ],
       location: currentWeather.name,
     });
-  } else if (riskAnalysis.level === 'high') {
+  } else if (level === 4) {
     alerts.push({
       type: 'WARNING',
       category: 4,
       title: 'ALERTA METEOROLÓGICA ALTA',
-      message: 'Condiciones meteorológicas peligrosas. Tome precauciones inmediatas.',
+      message:
+        'Condiciones meteorológicas peligrosas. Tome precauciones inmediatas.',
       priority: 'medium',
       actions: [
         'Limite actividades al aire libre',
@@ -182,7 +186,22 @@ export function generateAlerts(riskAnalysis, currentWeather) {
       ],
       location: currentWeather.name,
     });
-  } else if (riskAnalysis.level === 'medium') {
+  } else if (level === 3) {
+    alerts.push({
+      type: 'WARNING',
+      category: 3,
+      title: 'ALERTA METEOROLÓGICA MODERADA',
+      message:
+        'Condiciones meteorológicas severas. Tome precauciones.',
+      priority: 'medium',
+      actions: [
+        'Limite actividades al aire libre',
+        'Asegure objetos sueltos',
+        'Monitoree actualizaciones del clima',
+      ],
+      location: currentWeather.name,
+    });
+  } else if (level === 2) {
     alerts.push({
       type: 'ADVISORY',
       category: 2,
