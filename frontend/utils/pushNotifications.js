@@ -3,6 +3,8 @@ import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Alert, Platform } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { track } from './analytics';
+
 
 
 export async function registerForPushNotificationsAsync() {
@@ -37,8 +39,12 @@ export async function registerForPushNotificationsAsync() {
       body: JSON.stringify({ token: fcmToken }),
     });
     console.log('Token enviado al backend (frontend)');
+    track('push_token_saved', { ok: true });
+
   } catch (error) {
     console.error('Error enviando token al backend:', error);
+     track('push_token_saved', { ok: false, error: String(error?.message || error) });
+
   }
   // TODO: envíalo a tu backend
   return fcmToken;

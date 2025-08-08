@@ -2,6 +2,7 @@ import { View, Text, Pressable, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import dayjs from "../utils/date";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { track } from '../utils/analytics';
 
 export const colorForLevel = (l) =>
   ({
@@ -25,7 +26,14 @@ export default function AlertCard({ alert, onPress }) {
       className="w-full border-b border-b-gray-200 dark:border-b-gray-700 rounded-lg mb-2"
       style={{ backgroundColor: bannerColor }}
       android_ripple={{ color: "#ccc" }}
-      onPress={onPress}
+        onPress={() => {
+         track('alert_card_tap', {
+           alertId: String(alert.id),
+           level: Number(alert.level),
+           score: Number(alert.score ?? 0),
+         });
+          onPress?.();
+        }}
     >
       {/* fila título + icono + tiempo */}
       <View className="flex-row items-center justify-between p-4">
