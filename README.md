@@ -16,8 +16,32 @@ BluEye es un proyecto integral de alertas y prevención de huracanes. Consta de 
 - **README.md** – Documentación general del proyecto.
 
 ### Variables de entorno
-- `frontend/.env.example` contiene `REACT_APP_OPENWEATHER_API_KEY`.
+- `frontend/.env.example` contiene `REACT_APP_OPENWEATHER_API_KEY` y `EXPO_PUBLIC_MIXPANEL_TOKEN` (clave de Mixpanel).
 - `backend/.env.example` define `OPENWEATHER_API_KEY`, `PORT` y la cadena de conexión `DATABASE_URL` para PostgreSQL.
+
+## Eventos de analítica (Mixpanel)
+La aplicación registra eventos en Mixpanel para entender su uso:
+
+- `alerts_fetch_start` – sin propiedades.
+- `alerts_fetch_success` – `duration_ms` (tiempo de respuesta) y `list_count` (número de alertas).
+- `alerts_fetch_error` – `duration_ms` y `error` (mensaje).
+- `push_permission` – `status` (`granted` o `denied`).
+- `push_token_saved` – `ok` (booleano) y `error` (mensaje opcional).
+- `push_received_foreground` – `alertId`.
+- `push_open` – `alertId`, `alertLevel` y `origin` (`listener` o `initial`).
+- `alert_card_tap` – `alertId`, `level` y `score`.
+- `alert_details_view` – `alertId`, `level` y `score`.
+- `details_map_tap` – `alertId`, `level` y `score`.
+- `details_boletin_tap` – `alertId`, `level` y `score`.
+- `screen_view` – `screen` (ruta actual).
+- `app_background` – sin propiedades.
+- `theme_change` – `theme` (`light` o `dark`).
+- `feedback_submit` – `hasText` (booleano), `length` (caracteres) y `screen`.
+- `ai_screen_view` – sin propiedades.
+- `ai_restart_conversation` – sin propiedades.
+- `ai_message_send` – `length` (caracteres).
+- `ai_response_received` – `length` (caracteres).
+- `ai_response_error` – sin propiedades.
 
 ## Building for Android
 Para generar un APK de prueba se utiliza **Expo EAS**:
