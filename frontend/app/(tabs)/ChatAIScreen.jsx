@@ -24,6 +24,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { sendMessage } from "../../api/sendMessage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import PageTitle from "../../components/PageTitle";
+import { track } from "../../utils/analytics";
 
 export default function ChatAIScreen() {
   const [input, setInput] = useState("");
@@ -38,6 +39,11 @@ export default function ChatAIScreen() {
       fontSize: 18,
     },
   };
+
+  // Track screen view
+  React.useEffect(() => {
+    track("ai_screen_view");
+  }, []);
 
   // Persistent storage functions
   const loadMessages = async () => {
@@ -74,6 +80,7 @@ export default function ChatAIScreen() {
         {
           text: "Reiniciar",
           onPress: () => {
+            track("ai_restart_conversation");
             setMessages([]);
             saveMessages([]);
           },
@@ -104,6 +111,7 @@ export default function ChatAIScreen() {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
+    track("ai_message_send", { length: userMessage.text.length });
 
     try {
       const aiResponse = await sendMessage(userMessage.text);
@@ -113,7 +121,9 @@ export default function ChatAIScreen() {
         timestamp: new Date().toISOString(),
       };
       setMessages((prev) => [...prev, botMessage]);
+      track("ai_response_received", { length: aiResponse.length });
     } catch (error) {
+      track("ai_response_error");
       Alert.alert("Error", "No se pudo enviar el mensaje. Intente nuevamente.");
     } finally {
       setIsLoading(false);
