@@ -35,6 +35,7 @@ frontend/ios/
 frontend/web-build/
 frontend/dist/
 frontend/*.log
+frontend/.env
 
 # EAS & build artifacts
 *.apk

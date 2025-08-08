@@ -19,6 +19,8 @@ BluEye es un proyecto integral de alertas y prevención de huracanes. Consta de 
 - `frontend/.env.example` contiene `REACT_APP_OPENWEATHER_API_KEY` y `EXPO_PUBLIC_MIXPANEL_TOKEN` (clave de Mixpanel).
 - `backend/.env.example` define `OPENWEATHER_API_KEY`, `PORT` y la cadena de conexión `DATABASE_URL` para PostgreSQL.
 
+Los archivos `.env` se usan solo para desarrollo local y no deben versionarse. En producción define estas variables en el entorno del sistema o utiliza un gestor seguro de secretos.
+
 ## Eventos de analítica (Mixpanel)
 La aplicación registra eventos en Mixpanel para entender su uso:
 
