@@ -11,6 +11,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import dayjs from "../utils/date";
 import { colorForLevel } from "../components/AlertCard";
+import { track } from "../utils/analytics";
 
 const API_URL = "https://metaquetzal-production.up.railway.app";
 
@@ -42,6 +43,16 @@ export default function AlertDetailsScreen() {
       live = false;
     };
   }, [id]);
+
+  useEffect(() => {
+    if (alert) {
+      track("alert_details_view", {
+        alertId: String(alert.id),
+        level: Number(alert.level),
+        score: Number(alert.score ?? 0),
+      });
+    }
+  }, [alert]);
 
   /* estados */
   if (loading)
@@ -178,7 +189,14 @@ export default function AlertDetailsScreen() {
         <TouchableOpacity
           className="flex-1 bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-2xl py-3 items-center"
           android_ripple={{ color: "#ffffff33" }}
-          onPress={() => router.push("/MapScreen")}
+          onPress={() => {
+            track("details_map_tap", {
+              alertId: String(alert.id),
+              level: Number(alert.level),
+              score: Number(alert.score ?? 0),
+            });
+            router.push("/MapScreen");
+          }}
         >
           <Text className="text-white dark:text-phase2TitlesDark font-bold">
             Ver en mapa
@@ -187,7 +205,14 @@ export default function AlertDetailsScreen() {
         <TouchableOpacity
           className="flex-1 bg-phase2Buttons dark:bg-phase2ButtonsDark rounded-2xl py-3 items-center"
           android_ripple={{ color: "#ffffff33" }}
-          onPress={() => console.log("TODO: Boletín oficial", id)}
+          onPress={() => {
+            track("details_boletin_tap", {
+              alertId: String(alert.id),
+              level: Number(alert.level),
+              score: Number(alert.score ?? 0),
+            });
+            console.log("TODO: Boletín oficial", id);
+          }}
         >
           <Text className="text-white dark:text-phase2TitlesDark font-bold">
             Ver Boletín oficial

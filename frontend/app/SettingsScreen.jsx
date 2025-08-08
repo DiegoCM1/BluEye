@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link } from "expo-router";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useColorScheme } from "nativewind";
+import { track } from "../utils/analytics";
 
 export default function SettingsScreen() {
   const [isNotificationsEnabled, setNotificationsEnabled] = useState(false);
@@ -23,7 +24,11 @@ export default function SettingsScreen() {
   const handleDaltonicToggle = () =>
     Alert.alert("¡Próximamente!", "Esta función estará disponible muy pronto.");
 
-  const handleDarkModeToggle = () => toggleColorScheme();
+  const handleDarkModeToggle = () => {
+    const newTheme = colorScheme === "dark" ? "light" : "dark";
+    toggleColorScheme();
+    track("theme_change", { theme: newTheme });
+  };
 
   /** shared row styling */
   const row =

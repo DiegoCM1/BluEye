@@ -8,6 +8,7 @@ import { DaltonicModeProvider } from "../context/DaltonicModeContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useColorScheme } from "nativewind";
 import { useEffect } from "react";
+import { AppState } from "react-native";
 import { useRouter } from "expo-router";
 import {
   registerForPushNotificationsAsync,
@@ -93,6 +94,15 @@ export default function Layout() {
       })();
     }
   }, [pathname]);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (state) => {
+      if (state === "background") {
+        track("app_background");
+      }
+    });
+    return () => sub.remove();
+  }, []);
 
   const headerBg =
     colorScheme === "dark" ? "rgb(40, 60, 80)" : "rgb(60, 200, 220)";
