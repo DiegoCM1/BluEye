@@ -10,7 +10,7 @@ import { track } from "../utils/analytics";
 
 export default function SettingsScreen() {
   const [isNotificationsEnabled, setNotificationsEnabled] = useState(false);
-  const { colorScheme, toggleColorScheme } = useColorScheme(); // "light" | "dark"
+  const { colorScheme, setColorScheme } = useColorScheme(); // "light" | "dark"
 
   /* ──────────────── colour palette (matches MoreScreen) ──────────────── */
   const iconColor = colorScheme === "dark" ? "rgb(60, 200, 220)" : "#1F2937"; // blue‑ish / gray‑800
@@ -24,9 +24,9 @@ export default function SettingsScreen() {
   const handleDaltonicToggle = () =>
     Alert.alert("¡Próximamente!", "Esta función estará disponible muy pronto.");
 
-  const handleDarkModeToggle = () => {
-    const newTheme = colorScheme === "dark" ? "light" : "dark";
-    toggleColorScheme();
+  const handleDarkModeToggle = (value) => {
+    const newTheme = value ? "dark" : "light";
+    setColorScheme(newTheme);
     track("theme_change", { theme: newTheme });
   };
 
