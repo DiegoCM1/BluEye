@@ -36,7 +36,7 @@ export default function ChatAIScreen() {
   const markdownStyles = {
     body: {
       color: colorScheme === "dark" ? "white" : "rgb(30, 30, 60)",
-      fontSize: 18,
+      fontSize: 16,
     },
   };
 
@@ -123,8 +123,19 @@ export default function ChatAIScreen() {
       setMessages((prev) => [...prev, botMessage]);
       track("ai_response_received", { length: aiResponse.length });
     } catch (error) {
-      track("ai_response_error");
-      Alert.alert("Error", "No se pudo enviar el mensaje. Intente nuevamente.");
+      track("ai_response_error", { message: error.message });
+      console.error("Error sending message:", error);
+      const errorText =
+        error.message === "NO_CONNECTION"
+          ? "Sin conexión. Verifica tu conexión a Internet."
+          : "Ocurrió un error con el asistente.";
+      const errorMessage = {
+        sender: "error",
+        text: errorText,
+        timestamp: new Date().toISOString(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+      Alert.alert("Error", errorText);
     } finally {
       setIsLoading(false);
     }
@@ -143,7 +154,7 @@ export default function ChatAIScreen() {
 
   // Indicator shown while waiting for the AI response
   const ThinkingBubble = () => (
-    <View className="mb-3 flex-row justify-start">
+    <View className="mb-2 flex-row justify-start">
       <View className="max-w-[80%] rounded-2xl rounded-tl-none bg-phase2Cards dark:bg-phase2CardsDark px-4 py-3">
         <ActivityIndicator size="small" color="gray" />
       </View>
@@ -189,19 +200,23 @@ export default function ChatAIScreen() {
             ListFooterComponent={isLoading ? <ThinkingBubble /> : null}
             renderItem={({ item }) => (
               <View
-                className={`mb-3 flex-row ${
+                className={`mb-2 flex-row ${
                   item.sender === "user" ? "justify-end" : "justify-start"
                 }`}
               >
                 <View
-                  className={`rounded-2xl px-4 py-3 ${
+                  className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                     item.sender === "user"
-                      ? "max-w-[80%] bg-phase2Buttons rounded-tr-none"
-                      : "dark:text-phase2Cards rounded-tl-none"
+                      ? "bg-phase2Buttons rounded-tr-none"
+                      : item.sender === "error"
+                      ? "bg-red-100 dark:bg-red-800 rounded-tl-none"
+                      : "bg-phase2Cards dark:bg-phase2CardsDark rounded-tl-none"
                   }`}
                 >
                   {item.sender === "user" ? (
-                    <Text className="text-lg text-white">{item.text}</Text>
+                    <Text className="text-base text-white">{item.text}</Text>
+                  ) : item.sender === "error" ? (
+                    <Text className="text-base text-red-700 dark:text-red-200">{item.text}</Text>
                   ) : (
                     <Markdown style={markdownStyles}>{item.text}</Markdown>
                   )}

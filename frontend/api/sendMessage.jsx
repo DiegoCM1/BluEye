@@ -8,6 +8,9 @@ export const sendMessage = async (question) => {
     return response.data.response;
   } catch (error) {
     console.error("AI Request Error:", error.response?.data || error.message);
-    return "Lo siento, ocurrió un error al contactar al asistente.";
+    if (!error.response) {
+      throw new Error("NO_CONNECTION");
+    }
+    throw new Error(error.response?.data?.message || "SERVER_ERROR");
   }
 };
