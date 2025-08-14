@@ -50,22 +50,11 @@ export default function AlertCard({ alert, onPress }) {
         </Text>
       </View>
 
-      {/* descripción + botones */}
-      <View className="flex-row items-start px-4 pb-2">
-        <Text className="text-base w-4/6 text-phase2SecondaryTxt dark:text-phase2SecondaryTxtDark pr-2">
+      {/* descripción */}
+      <View className="flex-row items-start px-4 pb-4">
+        <Text className="text-base w-5/6 text-phase2SecondaryTxt dark:text-phase2SecondaryTxtDark pr-2">
           {description}
         </Text>
-        <View className="space-y-2 w-2/6 h-20">
-          <TouchableOpacity
-            className="bg-phase2Buttons dark:bg-phase2CardsDark rounded-lg justify-center items-center h-10 ml-auto mb-2"
-            android_ripple={{ color: "#ffffff33" }}
-            onPress={() => router.push("/MapScreen")}
-          >
-            <Text className="text-white dark:text-phase2TitlesDark font-bold px-2">
-              Ver en mapa
-            </Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </Pressable>
   );
