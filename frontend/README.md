@@ -14,8 +14,8 @@ Este paquete contiene la app realizada con React Native y Expo. Utiliza **Expo R
 - `global.css` y `tailwind.config.js` – estilos con Tailwind y colores personalizados.
 - `api/sendMessage.jsx` – helper que envía preguntas al asistente alojado en [ai-blueye](https://github.com/DiegoCM1/ai-blueye).
 - `FeedbackScreen.jsx` – formulario para enviar feedback que se guarda en el backend.
+- `components/Main.native.jsx` - Using [Google Maps SDK](https://developers.google.com/maps/documentation/android-sdk/ui-settings) trough Expo: [react-native-maps](https://docs.expo.dev/versions/latest/sdk/map-view/)
 - `services/feedbackService.js` – helper para comunicar la app con la API de feedback.
-- `open6.py` – prototipo en Streamlit para pruebas de la interfaz web del chatbot (no forma parte del build).
 
 ## Compilar con EAS
 Dentro de `frontend/` existe `eas.json` para crear APKs de prueba. Tras iniciar sesión con `eas login` ejecuta:

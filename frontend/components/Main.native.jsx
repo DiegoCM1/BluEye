@@ -1,8 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Pressable, Text, ActivityIndicator, StyleSheet, Switch, Modal } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import MapView, { UrlTile, PROVIDER_GOOGLE } from 'react-native-maps';
-import * as Location from 'expo-location';
+import React, { useState, useEffect, useRef } from "react";
+import {
+  View,
+  Pressable,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  Switch,
+  Modal,
+} from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import MapView, { UrlTile, PROVIDER_GOOGLE } from "react-native-maps";
+import * as Location from "expo-location";
 
 const OWM_API_KEY = process.env.EXPO_PUBLIC_OPENWEATHER_API_KEY;
 
@@ -20,8 +28,8 @@ export default function WeatherMapNativewind() {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.warn('Location permission denied');
+      if (status !== "granted") {
+        console.warn("Location permission denied");
         setLoading(false);
         return;
       }
@@ -50,9 +58,15 @@ export default function WeatherMapNativewind() {
       <MapView
         ref={mapRef}
         provider={PROVIDER_GOOGLE}
-        style={styles.map}          // <— real style prop
+        style={styles.map} // <— real style prop
         showsUserLocation
         initialRegion={region}
+        // Disable default UI components
+        showsCompass={false} // Removes the compass
+        showsMyLocationButton={false} // Removes default location button
+        showsScale={false} // Removes scale bar
+        zoomControlEnabled={false} // Disables zoom +/- buttons (Android only)
+        toolbarEnabled={false} // Disables long-press toolbar on Android
       >
         {showWind && (
           <UrlTile
@@ -91,6 +105,7 @@ export default function WeatherMapNativewind() {
         <MaterialCommunityIcons name="layers-outline" size={24} color="#333" />
       </Pressable>
 
+      {/* Closing Layer Modal */}
       <Modal
         animationType="slide"
         transparent
@@ -99,13 +114,33 @@ export default function WeatherMapNativewind() {
       >
         <View className="flex-1 justify-end bg-black/40">
           <View className="bg-white p-6 rounded-t-2xl">
-            <Text className="text-lg font-bold mb-4 text-center">Map Layers</Text>
+            <Text className="text-lg font-bold mb-4 text-center">
+              Map Layers
+            </Text>
             {[
-              { label: 'Viento', state: showWind, setter: setShowWind, icon: 'weather-windy' },
-              { label: 'Precipitación', state: showPrecip, setter: setShowPrecip, icon: 'weather-rainy' },
-              { label: 'Nubes', state: showClouds, setter: setShowClouds, icon: 'weather-cloudy' },
+              {
+                label: "Viento",
+                state: showWind,
+                setter: setShowWind,
+                icon: "weather-windy",
+              },
+              {
+                label: "Precipitación",
+                state: showPrecip,
+                setter: setShowPrecip,
+                icon: "weather-rainy",
+              },
+              {
+                label: "Nubes",
+                state: showClouds,
+                setter: setShowClouds,
+                icon: "weather-cloudy",
+              },
             ].map(({ label, state, setter, icon }) => (
-              <View key={label} className="flex-row justify-between items-center mb-3">
+              <View
+                key={label}
+                className="flex-row justify-between items-center mb-3"
+              >
                 <View className="flex-row items-center">
                   <MaterialCommunityIcons name={icon} size={20} color="#333" />
                   <Text className="ml-2 text-base">{label}</Text>
