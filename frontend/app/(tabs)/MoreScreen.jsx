@@ -21,12 +21,7 @@ export default function MoreScreen() {
       label: "Feedback",
       icon: "message-reply-outline",
       screen: "FeedbackScreen",
-    },
-    {
-      label: "Acerca de nosotros",
-      icon: "information-outline",
-      screen: "AboutScreen",
-    },
+    }
   ];
 
   return (
