@@ -146,10 +146,6 @@ export default function Layout() {
                     name="AlertDetailsScreen"
                     options={{ title: "Detalles de Alerta" }}
                   />
-                  <Stack.Screen
-                    name="AboutScreen"
-                    options={{ title: "Acerca de nosotros" }}
-                  />
                 </Stack>
               </SafeAreaView>
               <Toast />
